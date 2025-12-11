@@ -1,7 +1,8 @@
 {# | Variable | Type | Description |
 |------------------|---------|---------------------------------| | cart | object
-| | | cart.items_count | int | | | cart.total | string | Formatted total ex:
-"١٠٠ ر.س" | #} {% set important_links = theme.settings.get('important_links') %}
+| | cart.items_count | int | | cart.total | string | Formatted total ex: "١٠٠
+ر.س" | #} {% set important_links = theme.settings.get('important_links') %}
+
 <header class="store-header">
   {# Main Nav #}
   <div
@@ -10,19 +11,87 @@
   >
     <div class="inner bg-inherit w-full">
       <div class="container">
-        <div class="flex items-stretch justify-between relative">
-          <div class="flex items-center">
-            {#menu#}
-            <a
-              class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4"
-              href="#mobile-menu"
-              aria-label="Open-menu"
-            >
-              <i class="sicon-menu text-primary text-2xl"></i>
-            </a>
-            <custom-main-menu> </custom-main-menu>
-            {#logo#}
+        {# 3 أعمدة: أيقونات (شمال) - لوجو (منتصف) - منيو (يمين) #}
+        <div class="flex items-center justify-between relative">
+          {# icons - الشمال #}
+          <div class="flex items-center my-2.5">
+            <div class="flex items-center text-xs gap-4">
+              {# زر وضع الليل/النهار (صورة) #}
+              <button
+                class="header-btn flex items-center bg-transparent border-0 p-0"
+                type="button"
+                aria-label="toggle-theme"
+                onclick="salla.event.dispatch('appearance::toggle')"
+              >
+                <img
+                  src="../../../assets/icons/light.svg"
+                  alt="تغيير الوضع"
+                  class="w-4 h-4"
+                />
+              </button>
 
+              {# زر اللغة / الدولة (صورة + نص) - نفس event التوب ناف #}
+              <button
+                class="header-btn flex items-center bg-transparent border-0 p-0"
+                type="button"
+                aria-label="localization"
+                onclick="salla.event.dispatch('localization::open')"
+              >
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">اللغة</span>
+                <img
+                  src="../../../assets/icons/language (2).svg"
+                  alt="اللغة"
+                  class="w-4 h-4"
+                />
+              </button>
+
+              {# زر البحث #}
+              <button
+                class="header-btn flex items-center bg-transparent border-0 p-0"
+                type="button"
+                aria-label="search"
+                onclick="salla.event.dispatch('search::toggle')"
+              >
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">بحث</span>
+                <img
+                  src="../../../assets/icons/search.svg"
+                  alt="بحث"
+                  class="w-4 h-4"
+                />
+              </button>
+
+              {# المستخدم (قائمة أو زر تسجيل الدخول) #} {% if user.type ==
+              'user' %}
+              <salla-user-menu avatar-only show-header></salla-user-menu>
+              {% else %}
+              <button
+                class="header-btn flex items-center bg-transparent border-0 p-0"
+                aria-label="user-icon"
+                type="button"
+                onclick="salla.event.dispatch('login::open')"
+              >
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">الحساب</span>
+                <img
+                  src="../../../assets/icons/user.svg"
+                  alt="الحساب"
+                  class="w-4 h-4"
+                />
+              </button>
+              {% endif %} {# ملخص السلة #}
+              <salla-cart-summary class="flex items-center">
+                <img
+                  slot="icon"
+                  src="../../../assets/icons/cart.svg"
+                  alt="السلة"
+                  class="w-4 h-4"
+                />
+                <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
+              </salla-cart-summary>
+            </div>
+          </div>
+
+          {# logo - في النص #}
+          <div class="flex items-center justify-center flex-1">
             <a class="navbar-brand" href="{{ store.url }}">
               <img
                 fetchpriority="high"
@@ -40,114 +109,31 @@
             </a>
           </div>
 
-          {#icons#}
-
-          <div
-            class="flex items-center justify-end my-2.5 gap-2 rtl:space-x-reverse"
-          >
-            {# زر وضع الليل/النهار #}
-            <button
-              class="header-btn"
-              type="button"
-              aria-label="toggle-theme"
-              onclick="salla.event.dispatch('appearance::toggle')"
+          {# menu - في اليمين #}
+          <div class="flex items-center">
+            {# زر منيو الموبايل #}
+            <a
+              class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4"
+              href="#mobile-menu"
+              aria-label="Open-menu"
             >
-              <i class="header-btn__icon sicon-moon"></i>
-            </button>
+              <i class="sicon-menu text-primary text-2xl"></i>
+            </a>
 
-            {# زر اللغة / الدولة #}
-            <button
-              class="header-btn"
-              type="button"
-              aria-label="localization"
-              onclick="salla.event.dispatch('localization-modal::open')"
-            >
-              <i class="header-btn__icon sicon-globe"></i>
-              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">اللغة</span>
-            </button>
-
-            {# زر البحث #}
-            <button
-              class="header-btn"
-              type="button"
-              aria-label="search"
-              onclick="salla.event.dispatch('search::toggle')"
-            >
-              <i class="header-btn__icon sicon-search"></i>
-              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">بحث</span>
-            </button>
-
-            {# المستخدم (قائمة أو زر تسجيل الدخول) #} {% if user.type=='user' %}
-            <salla-user-menu avatar-only show-header></salla-user-menu>
-            {% else %}
-            <button
-              class="header-btn"
-              aria-label="user-icon"
-              type="button"
-              onclick="salla.event.dispatch('login::open')"
-            >
-              <i class="header-btn__icon sicon-user-circle"></i>
-              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">الحساب</span>
-            </button>
-            {% endif %} {# ملخص السلة #}
-            <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
-              <i
-                slot="icon"
-                class="header-btn__icon icon sicon-shopping-bag"
-              ></i>
-              <span slot="title">السلة</span>
-            </salla-cart-summary>
+            {# منيو الديسكتوب #}
+            <custom-main-menu></custom-main-menu>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  {# Top Nav #}
-  <div class="top-navbar">
-    <div class="container flex justify-between">
-      <div class="flex-1 flex items-center gap-2">
-        {# Footer Menu #} {% if important_links %}
-        <salla-menu source="footer" topnav></salla-menu>
-        {% endif %} {# Language & Currency Component #}
-        <div class="header-buttons">
-          {% if store.settings.is_multilingual or
-          store.settings.currencies_enabled %}
-          <button
-            type="button"
-            onclick="salla.event.dispatch('localization::open')"
-            class="btn--rounded-gray basis-0"
-          >
-            <span>{{ user.language.name }}</span>
-            <span class="mx-1.5">|</span> <span>{{ currency.symbol }}</span>
-          </button>
-          <salla-localization-modal></salla-localization-modal>
-          {% endif %}
-        </div>
-
-        {# Scopes | Branches #} {% if store.scope %}
-        <button
-          class="btn--rounded-gray"
-          onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})"
-        >
-          <i class="sicon-location rtl:ml-1 ltr:mr-1"></i>
-          {{ store.scope.name }}
-        </button>
-        {% endif %} {# Search bar #}
-        <div class="header-search flex-1">
-          <salla-search inline oval height="36"></salla-search>
-        </div>
-      </div>
-
-      <salla-contacts is-header></salla-contacts>
-    </div>
-  </div>
 </header>
 
-{% if store.scope %}
+{# مودال اللغة لازم يكون موجود عشان event localization::open يشتغل #} {% if
+store.settings.is_multilingual or store.settings.currencies_enabled %}
+<salla-localization-modal></salla-localization-modal>
+{% endif %} {% if store.scope %}
 <salla-scopes
   selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"
 ></salla-scopes>
-{% endif %} {% {% {% block styles %}
-<link rel="stylesheet" href="{{ asset('') }}" />
-{% endblock %} %}{% endblock %}}
+{% endif %}
