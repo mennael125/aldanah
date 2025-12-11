@@ -12,6 +12,7 @@
       <div class="container">
         <div class="flex items-stretch justify-between relative">
           <div class="flex items-center">
+            {#menu#}
             <a
               class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4"
               href="#mobile-menu"
@@ -20,6 +21,7 @@
               <i class="sicon-menu text-primary text-2xl"></i>
             </a>
             <custom-main-menu> </custom-main-menu>
+            {#logo#}
 
             <a class="navbar-brand" href="{{ store.url }}">
               <img
@@ -37,23 +39,63 @@
               {% endif %}
             </a>
           </div>
-          <div class="flex items-center justify-end my-2.5">
-            {% if user.type=='user' %}
+
+          {#icons#}
+
+          <div
+            class="flex items-center justify-end my-2.5 gap-2 rtl:space-x-reverse"
+          >
+            {# زر وضع الليل/النهار #}
+            <button
+              class="header-btn"
+              type="button"
+              aria-label="toggle-theme"
+              onclick="salla.event.dispatch('appearance::toggle')"
+            >
+              <i class="header-btn__icon sicon-moon"></i>
+            </button>
+
+            {# زر اللغة / الدولة #}
+            <button
+              class="header-btn"
+              type="button"
+              aria-label="localization"
+              onclick="salla.event.dispatch('localization-modal::open')"
+            >
+              <i class="header-btn__icon sicon-globe"></i>
+              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">اللغة</span>
+            </button>
+
+            {# زر البحث #}
+            <button
+              class="header-btn"
+              type="button"
+              aria-label="search"
+              onclick="salla.event.dispatch('search::toggle')"
+            >
+              <i class="header-btn__icon sicon-search"></i>
+              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">بحث</span>
+            </button>
+
+            {# المستخدم (قائمة أو زر تسجيل الدخول) #} {% if user.type=='user' %}
             <salla-user-menu avatar-only show-header></salla-user-menu>
             {% else %}
             <button
               class="header-btn"
               aria-label="user-icon"
+              type="button"
               onclick="salla.event.dispatch('login::open')"
             >
               <i class="header-btn__icon sicon-user-circle"></i>
+              <span class="ml-1 rtl:ml-0 rtl:mr-1 text-sm">الحساب</span>
             </button>
-            {% endif %}
+            {% endif %} {# ملخص السلة #}
             <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
               <i
                 slot="icon"
                 class="header-btn__icon icon sicon-shopping-bag"
               ></i>
+              <span slot="title">السلة</span>
             </salla-cart-summary>
           </div>
         </div>
