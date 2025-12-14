@@ -1,18 +1,22 @@
 <section class="s-block s-block--banners container">
   <div class="banners-grid">
-    {% for index, banner in component.catogery1 %}
+    {% for index, banner in component.collectiongrid %}
     <a
       href="{{ banner.url }}"
-      aria-label="{{ (banner.title ? banner.title : 'square-banner-' ~ index) | e('html_attr') }}"
+      aria-label="{{ (banner.titlecat ? banner.titlecat : 'square-banner-' ~ index) | e('html_attr') }}"
       class="banner-card"
-      style="background-image:url('{{ banner.image }}');"
+      style="background-image:url('{{ banner.imagecat }}');"
     >
-      {% if banner.title or banner.description %}
+      {% if banner.titlecat or banner.des %}
       <div class="banner-text">
         {% if banner.titlecat %}
-        <h3 class="banner-title">{{ banner.title }}</h3>
-        {% endif %} {% if banner.description %}
-        <p class="banner-desc">{{ banner.description }}</p>
+        <h3 class="banner-title" style="color:{{ banner.catcolor }};">
+          {{ banner.titlecat }}
+        </h3>
+        {% endif %} {% if banner.des %}
+        <p class="banner-desc" style="color:{{ banner.catcolor }};">
+          {{ banner.des }}
+        </p>
         {% endif %}
       </div>
       {% endif %}
@@ -68,7 +72,6 @@
     z-index: 2;
     text-align: right;
     direction: rtl;
-    color: #fff;
   }
 
   .banner-title {
@@ -84,6 +87,4 @@
     opacity: 0.95;
   }
 </style>
-{% endblock %} {% block scriptcat %}
-<script></script>
-{% endblock %}
+{% endblock %} {% block scriptcat %}{% endblock %}
