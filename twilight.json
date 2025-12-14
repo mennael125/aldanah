@@ -1142,6 +1142,66 @@
                     "value": [],
                     "minLength": 1,
                     "maxLength": 5
+                },
+                {
+                    "id": "maintextcolor",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "لون الاساسي",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
+                },
+                {
+                    "id": "subcolor",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "لون الفرعي",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
+                },
+                {
+                    "id": "textcolor",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "لون المحتوي",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
+                },
+                {
+                    "id": "backbutton",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "خلفيه الزر",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
+                },
+                {
+                    "id": "buttoncolot",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "لون الزر",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
                 }
             ]
         }
