@@ -1214,6 +1214,16 @@
             "icon": "sicon-store",
             "path": "catogery",
             "fields": []
+        },
+        {
+            "key": "4295b55e-2ca6-426a-857d-786ae7a15f92",
+            "title": {
+                "en": "catogery",
+                "ar": "تصنيفات"
+            },
+            "icon": "sicon-store",
+            "path": "catogery1",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
