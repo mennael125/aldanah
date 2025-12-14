@@ -1308,7 +1308,35 @@
             },
             "icon": "sicon-store",
             "path": "video1",
-            "fields": []
+            "fields": [
+                {
+                    "id": "rabt_alfedeo",
+                    "type": "string",
+                    "format": "url",
+                    "inputType": "url",
+                    "label": "رابط الفيديو",
+                    "description": "الرابط mp4",
+                    "labelHTML": null,
+                    "placeholder": "e.g. https://salla.sa",
+                    "icon": "sicon-link",
+                    "value": null,
+                    "required": true,
+                    "minLength": 6,
+                    "maxLength": 30
+                },
+                {
+                    "id": "sorh_alfedeo",
+                    "type": "string",
+                    "format": "image",
+                    "label": "صوره الفيديو",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "e.g. https://hostname.com/image.png",
+                    "icon": "sicon-image",
+                    "value": null,
+                    "required": false
+                }
+            ]
         }
     ],
     "support_url": "https://example.com",
