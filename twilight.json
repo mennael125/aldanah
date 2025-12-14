@@ -1348,7 +1348,7 @@
             "path": "featurestore1",
             "fields": [
                 {
-                    "id": "collection",
+                    "id": "featbox",
                     "type": "collection",
                     "format": "collection",
                     "label": "Collection",
@@ -1358,7 +1358,7 @@
                     "icon": "sicon-list-add",
                     "fields": [
                         {
-                            "id": "collection.image",
+                            "id": "featbox.collection.image",
                             "type": "string",
                             "format": "image",
                             "label": "صوره",
@@ -1370,7 +1370,7 @@
                             "required": false
                         },
                         {
-                            "id": "collection.maintext22",
+                            "id": "featbox.collection.maintext22",
                             "type": "string",
                             "format": "text",
                             "label": "رئيسي",
@@ -1385,7 +1385,7 @@
                             "maxLength": 30
                         },
                         {
-                            "id": "collection.subtext22",
+                            "id": "featbox.collection.subtext22",
                             "type": "string",
                             "format": "text",
                             "label": "فرعي",
