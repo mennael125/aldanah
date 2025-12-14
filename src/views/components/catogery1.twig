@@ -1,0 +1,89 @@
+<section class="s-block s-block--banners container">
+  <div class="banners-grid">
+    {% for index, banner in component.catogery1 %}
+    <a
+      href="{{ banner.url }}"
+      aria-label="{{ (banner.title ? banner.title : 'square-banner-' ~ index) | e('html_attr') }}"
+      class="banner-card"
+      style="background-image:url('{{ banner.image }}');"
+    >
+      {% if banner.title or banner.description %}
+      <div class="banner-text">
+        {% if banner.titlecat %}
+        <h3 class="banner-title">{{ banner.title }}</h3>
+        {% endif %} {% if banner.description %}
+        <p class="banner-desc">{{ banner.description }}</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% block stylecat %}
+<style>
+  .banners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .banners-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+  .banner-card {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 220px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-decoration: none;
+  }
+
+  .banner-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0) 60%
+    );
+    pointer-events: none;
+  }
+
+  .banner-text {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    z-index: 2;
+    text-align: right;
+    direction: rtl;
+    color: #fff;
+  }
+
+  .banner-title {
+    margin: 0 0 4px 0;
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .banner-desc {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.95;
+  }
+</style>
+{% endblock %} {% block scriptcat %}
+<script></script>
+{% endblock %}
