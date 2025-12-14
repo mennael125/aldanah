@@ -15,18 +15,40 @@
         <div
           class="absolute inset-0 container flex items-center justify-end px-8 py-16 lg:px-12 lg:py-20 home-slider__content"
         >
-          <div class="text-white w-1/2 sm:w-2/3 lg:w-1/3 text-right">
-            <p data-swiper-parallax="-700">{{ banner.subtitl }}</p>
+          <div class="w-1/2 sm:w-2/3 lg:w-1/3 text-right home-slide__text">
+            <p
+              class="home-slide__sub"
+              data-swiper-parallax="-700"
+              style="color:{{ banner.subcolor }};"
+            >
+              {{ banner.subtitl }}
+            </p>
 
-            <h3 data-swiper-parallax="-300">{{ banner.title }}</h3>
+            <h3
+              class="home-slide__title"
+              data-swiper-parallax="-300"
+              style="color:{{ banner.maintextcolor }};"
+            >
+              {{ banner.title }}
+            </h3>
 
-            <p data-swiper-parallax="-700">{{ banner.text }}</p>
+            <p
+              class="home-slide__body"
+              data-swiper-parallax="-700"
+              style="color:{{ banner.textcolor }};"
+            >
+              {{ banner.text }}
+            </p>
 
             {% if banner.link %}
             <a
               href="{{ banner.link }}"
-              class="inline-flex items-center justify-center mt-6 px-6 py-3 border border-white/20 bg-black/40 text-white no-underline ms-auto"
-              style="border-radius: 6px"
+              class="home-slide__btn inline-flex items-center justify-center mt-6 px-6 py-3 no-underline ms-auto"
+              style="background:{{
+                banner.backbutton
+              }};border-radius:8px;border:1px solid rgba(255,255,255,0.15);color:{{
+                banner.buttoncolor
+              }};"
             >
               {{ banner.buttontext }}
             </a>
@@ -38,31 +60,34 @@
     </div>
   </salla-slider>
 </section>
-{% block styleslider %}
 
+{% block styleslider %}
 <style>
-  /* نخلي كل السلايدز نفس الارتفاع حسب أطول صورة */
   .home-slide {
+    min-height: 628px;
     height: var(--home-slide-h, auto);
   }
 
-  /* نخلي الصورة تملى ارتفاع السلايد بدون قص */
+  @media (min-width: 1024px) {
+    .home-slide {
+      min-height: 750px;
+    }
+  }
+
   .home-slide__img {
     height: 100%;
     width: 100%;
     object-fit: contain;
   }
 
-  /* موبايل: النص يمين وعرضه نص الصورة */
   @media (max-width: 639px) {
-    .home-slider__content > div {
+    .home-slider__content > .home-slide__text {
       width: 50% !important;
       text-align: right !important;
     }
   }
 </style>
 {% endblock %} {% block scriptslider %}
-
 <script>
   (function () {
     function setMaxSlideHeight() {
