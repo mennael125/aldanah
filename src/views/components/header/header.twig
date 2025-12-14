@@ -1,96 +1,79 @@
 {# | Variable | Type | Description |
-|------------------|---------|---------------------------------| | cart | object
-| | cart.items_count | int | | cart.total | string | Formatted total ex: "١٠٠
-ر.س" | #} {% set important_links = theme.settings.get('important_links') %}
+|--------------------|------|-----------------------------------| | cart |
+object | | cart.items_count | int | | cart.total | string | Formatted total ex:
+"١٠٠ ر.س" | #} {% set important_links = theme.settings.get('important_links') %}
 
 <header class="store-header">
-  {# Main Nav #}
-  <div
-    id="mainnav"
-    class="main-nav-container shadow-default bg-white flex items-center"
-  >
-    <div class="inner bg-inherit w-full">
-      <div class="container">
-        {# 3 أعمدة: أيقونات (شمال) - لوجو (منتصف) - منيو (يمين) #}
-        <div class="flex items-center justify-between relative">
-          {# icons - الشمال #}
-          <div class="flex items-center my-2.5">
-            <div class="flex items-center text-xs gap-4">
-              {# زر وضع الليل/النهار (صورة) #}
-              <button
-                class="header-btn flex items-center bg-transparent border-0 p-0"
-                type="button"
-                aria-label="toggle-theme"
-                onclick="salla.event.dispatch('appearance::toggle')"
-              >
-                <img
-                  src="../../../assets/icons/light.svg"
-                  alt="تغيير الوضع"
-                  class="w-4 h-4"
-                />
-              </button>
+  <div id="mainnav" class="main-nav-container bg-white flex items-center">
+    <div class="inner bg-inherit w-full px-4 py-[18px] lg:p-6">
+      <div class="container w-full p-0">
+        <div class="flex items-center justify-between relative lg:hidden">
+          <div class="flex items-center gap-3">
+            <a
+              class="mburger mburger--collapse leading-none"
+              href="#mobile-menu"
+              aria-label="Open-menu"
+            >
+              <i class="sicon-menu text-primary text-2xl"></i>
+            </a>
 
-              {# زر اللغة / الدولة (صورة + نص) - نفس event التوب ناف #}
-              <button
-                class="header-btn flex items-center bg-transparent border-0 p-0"
-                type="button"
-                aria-label="localization"
-                onclick="salla.event.dispatch('localization::open')"
-              >
-                <span class="ml-1 rtl:ml-0 rtl:mr-1">اللغة</span>
-                <img
-                  src="../../../assets/icons/language (2).svg"
-                  alt="اللغة"
-                  class="w-4 h-4"
-                />
-              </button>
-
-              {# زر البحث #}
-              <button
-                class="header-btn flex items-center bg-transparent border-0 p-0"
-                type="button"
-                aria-label="search"
-                onclick="salla.event.dispatch('search::toggle')"
-              >
-                <span class="ml-1 rtl:ml-0 rtl:mr-1">بحث</span>
-                <img
-                  src="../../../assets/icons/search.svg"
-                  alt="بحث"
-                  class="w-4 h-4"
-                />
-              </button>
-
-              {# المستخدم (قائمة أو زر تسجيل الدخول) #} {% if user.type ==
-              'user' %}
-              <salla-user-menu avatar-only show-header></salla-user-menu>
-              {% else %}
-              <button
-                class="header-btn flex items-center bg-transparent border-0 p-0"
-                aria-label="user-icon"
-                type="button"
-                onclick="salla.event.dispatch('login::open')"
-              >
-                <span class="ml-1 rtl:ml-0 rtl:mr-1">الحساب</span>
-                <img
-                  src="../../../assets/icons/user.svg"
-                  alt="الحساب"
-                  class="w-4 h-4"
-                />
-              </button>
-              {% endif %} {# ملخص السلة #}
-              <salla-cart-summary class="flex items-center">
-                <img
-                  slot="icon"
-                  src="../../../assets/icons/cart.svg"
-                  alt="السلة"
-                  class="w-4 h-4"
-                />
-                <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
-              </salla-cart-summary>
-            </div>
+            <button
+              class="header-btn flex items-center bg-transparent p-0"
+              type="button"
+              aria-label="localization"
+              onclick="salla.event.dispatch('localization::open')"
+            >
+              <i class="header-btn__icon sicon-language text-base"></i>
+            </button>
           </div>
 
-          {# logo - في النص #}
+          <div class="flex items-center justify-center flex-1">
+            <a class="navbar-brand mx-auto" href="{{ store.url }}">
+              <img
+                fetchpriority="high"
+                width="100%"
+                height="100%"
+                loading="eager"
+                src="{{ store.logo }}"
+                alt="{{ store.name }} logo"
+                class="max-h-10"
+              />
+              {% if is_page('index') %}
+              <h1 class="sr-only">{{ store.name }}</h1>
+              {% else %}
+              <h2 class="sr-only">{{ store.name }}</h2>
+              {% endif %}
+            </a>
+          </div>
+
+          <div class="flex items-center gap-3">
+            {% if user.type == 'user' %}
+            <salla-user-menu avatar-only show-header></salla-user-menu>
+            {% else %}
+            <button
+              class="header-btn flex items-center bg-transparent p-0"
+              aria-label="user-icon"
+              type="button"
+              onclick="salla.event.dispatch('login::open')"
+            >
+              <i class="header-btn__icon sicon-user-circle text-base"></i>
+            </button>
+            {% endif %}
+
+            <salla-cart-summary class="flex items-center">
+              <i
+                slot="icon"
+                class="header-btn__icon sicon-shopping-bag text-base"
+              ></i>
+            </salla-cart-summary>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center justify-between relative">
+          <div class="flex items-center">
+            <custom-main-menu></custom-main-menu>
+          </div>
+
           <div class="flex items-center justify-center flex-1">
             <a class="navbar-brand" href="{{ store.url }}">
               <img
@@ -109,19 +92,60 @@
             </a>
           </div>
 
-          {# menu - في اليمين #}
-          <div class="flex items-center">
-            {# زر منيو الموبايل #}
-            <a
-              class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4"
-              href="#mobile-menu"
-              aria-label="Open-menu"
-            >
-              <i class="sicon-menu text-primary text-2xl"></i>
-            </a>
+          <div class="flex items-center my-2.5">
+            <div class="flex items-center text-xs gap-4">
+              <button
+                class="header-btn flex items-center bg-transparent p-0"
+                type="button"
+                aria-label="toggle-theme"
+                onclick="salla.event.dispatch('appearance::toggle')"
+              >
+                <i class="header-btn__icon sicon-moon text-base"></i>
+              </button>
 
-            {# منيو الديسكتوب #}
-            <custom-main-menu></custom-main-menu>
+              <button
+                class="header-btn flex items-center bg-transparent p-0"
+                type="button"
+                aria-label="localization"
+                onclick="salla.event.dispatch('localization::open')"
+              >
+                <i class="header-btn__icon sicon-global text-base"></i>
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">اللغة</span>
+              </button>
+
+              <button
+                class="header-btn flex items-center bg-transparent p-0"
+                type="button"
+                aria-label="search"
+                onclick="salla.event.dispatch('search::toggle')"
+              >
+                <i class="header-btn__icon sicon-search text-base"></i>
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">بحث</span>
+              </button>
+
+              {% if user.type == 'user' %}
+              <salla-user-menu avatar-only show-header></salla-user-menu>
+              {% else %}
+              <button
+                class="header-btn flex items-center bg-transparent p-0"
+                aria-label="user-icon"
+                type="button"
+                onclick="salla.event.dispatch('login::open')"
+              >
+                <i class="header-btn__icon sicon-user-circle text-base"></i>
+                <span class="ml-1 rtl:ml-0 rtl:mr-1">الحساب</span>
+              </button>
+              {% endif %}
+
+              <salla-cart-summary class="flex items-center">
+                <i
+                  slot="icon"
+                  class="header-btn__icon sicon-shopping-bag text-base"
+                ></i>
+
+                <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
+              </salla-cart-summary>
+            </div>
           </div>
         </div>
       </div>
@@ -129,11 +153,37 @@
   </div>
 </header>
 
-{# مودال اللغة لازم يكون موجود عشان event localization::open يشتغل #} {% if
-store.settings.is_multilingual or store.settings.currencies_enabled %}
+{% if store.settings.is_multilingual or store.settings.currencies_enabled %}
 <salla-localization-modal></salla-localization-modal>
 {% endif %} {% if store.scope %}
 <salla-scopes
   selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"
 ></salla-scopes>
-{% endif %}
+{% endif %} {% block styleheader %}
+<style>
+  .main-nav-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 78px;
+    width: 100%;
+    margin: 0 auto;
+    z-index: 50;
+  }
+
+  @media (min-width: 1024px) {
+    .main-nav-container {
+      width: 90% !important;
+      top: 38px !important;
+      border-radius: 16px;
+    }
+  }
+
+  .header-btn,
+  .header-btn__icon {
+    border: none !important;
+    box-shadow: none !important;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% set slides = component.slider1|default([]) %} {% if slides|length %}
+<style>
+  .slider1-hero {
+    position: relative;
+    width: 100%;
+  }
+  .slider1-hero .home-slider__content {
+    min-height: clamp(360px, 62vh, 620px);
+  }
+  .slider1-hero .slider1-slide {
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  .slider1-hero .slider1-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.15) 55%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+  }
+  .slider1-hero .slider1-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: clamp(360px, 62vh, 620px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 24px 48px;
+    color: #fff;
+    text-align: right;
+  }
+  .slider1-hero .slider1-box {
+    width: min(560px, 92vw);
+  }
+  .slider1-hero .slider1-subtitle {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  .slider1-hero .slider1-title {
+    margin: 0 0 12px 0;
+    font-size: clamp(26px, 3.2vw, 44px);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .slider1-hero .slider1-content {
+    margin: 0 0 18px 0;
+    font-size: 14px;
+    line-height: 1.9;
+    opacity: 0.9;
+    max-width: 52ch;
+  }
+  .slider1-hero .slider1-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    text-decoration: none;
+    backdrop-filter: blur(2px);
+  }
+  .slider1-hero .swiper-pagination {
+    right: 26px !important;
+    left: auto !important;
+    bottom: 18px !important;
+    width: auto !important;
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+  .slider1-hero .swiper-pagination-bullet {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    opacity: 1 !important;
+    transition: width 0.25s ease, background 0.25s ease;
+  }
+  .slider1-hero .swiper-pagination-bullet-active {
+    width: 22px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+  @media (max-width: 768px) {
+    .slider1-hero .slider1-inner {
+      padding: 18px;
+    }
+    .slider1-hero .swiper-pagination {
+      right: 18px !important;
+      bottom: 14px !important;
+    }
+  }
+</style>
+
+<section
+  class="s-block s-block--default home-slider s-block--full-bg slider1-hero"
+  data-key="8595c890-317f-4dba-bc0a-2a7a92434267"
+>
+  <salla-slider auto-play pagination type="fullwidth">
+    <div slot="items">
+      {% for it in slides %} {% set title =
+      attribute(it,'slider1.alns_alasase')|default(it.alns_alasase|default(''))
+      %} {% set subtitle =
+      attribute(it,'slider1.description')|default(it.description|default('')) %}
+      {% set url = attribute(it,'slider1.url')|default(it.url|default('#')) %}
+      {% set image = attribute(it,'slider1.image')|default(it.image|default(''))
+      %} {% set content =
+      attribute(it,'slider1.almhtoe_alnse')|default(it.almhtoe_alnse|default(''))
+      %}
+
+      <div
+        class="bg-no-repeat bg-cover swiper-slide swiper-lazy-wrap slider1-slide"
+        style="background-image:url('{{ image|e('html_attr') }}');"
+      >
+        <div class="container slider1-inner">
+          <div class="slider1-box">
+            {% if subtitle %}
+            <p class="slider1-subtitle">{{ subtitle }}</p>
+            {% endif %} {% if title %}
+            <h2 class="slider1-title">{{ title }}</h2>
+            {% endif %} {% if content %}
+            <p class="slider1-content">{{ content }}</p>
+            {% endif %} {% if url %}<a
+              class="slider1-btn"
+              href="{{ url|e('html_attr') }}"
+              >اكتشف الآن</a
+            >{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </salla-slider>
+</section>
+{% endif %}
