@@ -1031,6 +1031,16 @@
                     "maxLength": 30
                 }
             ]
+        },
+        {
+            "key": "8595c890-317f-4dba-bc0a-2a7a92434267",
+            "title": {
+                "en": "slider1",
+                "ar": "slider1"
+            },
+            "icon": "sicon-store",
+            "path": "slider1",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
