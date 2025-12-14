@@ -1310,7 +1310,7 @@
             "path": "video1",
             "fields": [
                 {
-                    "id": "url-vi",
+                    "id": "urlvid",
                     "type": "string",
                     "format": "url",
                     "inputType": "url",
@@ -1325,7 +1325,7 @@
                     "maxLength": 30
                 },
                 {
-                    "id": "vid-im",
+                    "id": "vidimage",
                     "type": "string",
                     "format": "image",
                     "label": "صوره الفيديو",
