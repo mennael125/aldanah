@@ -13,7 +13,7 @@
         />
 
         <div
-          class="absolute inset-0 container flex items-center justify-end px-8 py-16 lg:px-12 lg:py-20 home-slider__content"
+          class="absolute inset-0 container flex items-center justify-start px-8 py-16 lg:px-12 lg:py-20 home-slider__content"
         >
           <div class="w-1/2 sm:w-2/3 lg:w-1/3 home-slide__text">
             <p class="home-slide__sub" style="color:{{ banner.subcolor }};">
@@ -56,6 +56,7 @@
 <style>
   .home-slide {
     min-height: 628px;
+    height: var(--home-slide-h, auto);
   }
 
   @media (min-width: 1024px) {
@@ -104,34 +105,45 @@
   .home-slider .swiper-pagination {
     display: flex !important;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end !important;
     gap: 10px;
     bottom: 18px !important;
-    pointer-events: auto !important;
+    left: auto !important;
+    right: 24px !important;
+    width: auto !important;
     z-index: 60 !important;
+    pointer-events: auto !important;
   }
 
   .home-slider .swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 999px !important;
     opacity: 1 !important;
     background: rgba(255, 255, 255, 0.35) !important;
-    margin: 0 !important;
     transition: all 0.2s ease;
     cursor: pointer;
+    margin: 0 !important;
   }
 
   .home-slider .swiper-pagination-bullet-active {
-    width: 26px;
-    height: 10px;
-    border-radius: 999px;
+    width: 26px !important;
+    height: 10px !important;
+    border-radius: 999px !important;
     background: #ffffff !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
   }
 
   .home-slider .swiper-pagination-progressbar {
     display: none !important;
+  }
+
+  @media (max-width: 639px) {
+    .home-slider .swiper-pagination {
+      right: 16px !important;
+      bottom: 12px !important;
+      gap: 8px;
+    }
   }
 
   .home-slider__content {
@@ -145,14 +157,26 @@
 {% endblock %} {% block scriptslider %}
 <script>
   (function () {
-    function disableWeirdTextAnimation() {
+    function setMinHeightOnly() {
+      document.querySelectorAll(".js-home-slide").forEach((slide) => {
+        slide.style.removeProperty("--home-slide-h");
+      });
+    }
+
+    function disableParallax() {
       document
         .querySelectorAll(".home-slider [data-swiper-parallax]")
         .forEach((el) => el.removeAttribute("data-swiper-parallax"));
     }
 
     window.addEventListener("load", () => {
-      disableWeirdTextAnimation();
+      setMinHeightOnly();
+      disableParallax();
+      setTimeout(disableParallax, 300);
+    });
+
+    window.addEventListener("resize", () => {
+      setMinHeightOnly();
     });
   })();
 </script>
