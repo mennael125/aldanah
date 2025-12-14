@@ -1337,6 +1337,16 @@
                     "required": false
                 }
             ]
+        },
+        {
+            "key": "0926489f-f975-4284-bc15-90de1cb29c6e",
+            "title": {
+                "en": "featurestore",
+                "ar": "مميزات المتجر"
+            },
+            "icon": "sicon-store",
+            "path": "featurestore1",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
