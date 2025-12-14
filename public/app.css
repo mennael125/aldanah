@@ -1052,9 +1052,6 @@ select {
 .mr-2 {
     margin-right: 0.5rem;
 }
-.ms-auto {
-    margin-left: auto;
-}
 .mt-1 {
     margin-top: 0.25rem;
 }
@@ -1888,9 +1885,6 @@ select {
 }
 .text-center {
     text-align: center;
-}
-.text-right {
-    text-align: right;
 }
 .text-start {
     text-align: left;

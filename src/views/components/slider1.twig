@@ -98,6 +98,27 @@
       direction: rtl !important;
     }
   }
+  .home-slider .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.35);
+    margin: 0 6px !important;
+    transition: all 0.2s ease;
+  }
+
+  .home-slider .swiper-pagination-bullet-active {
+    width: 26px;
+    height: 10px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+  }
+
+  .home-slider .swiper-pagination-progressbar {
+    display: none !important;
+  }
 </style>
 {% endblock %} {% block scriptslider %}
 <script>
