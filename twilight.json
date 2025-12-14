@@ -1310,7 +1310,7 @@
             "path": "video1",
             "fields": [
                 {
-                    "id": "rabt_alfedeo",
+                    "id": "url-vi",
                     "type": "string",
                     "format": "url",
                     "inputType": "url",
@@ -1325,7 +1325,7 @@
                     "maxLength": 30
                 },
                 {
-                    "id": "sorh_alfedeo",
+                    "id": "vid-im",
                     "type": "string",
                     "format": "image",
                     "label": "صوره الفيديو",
