@@ -1052,24 +1052,6 @@
                     "icon": "sicon-list-add",
                     "fields": [
                         {
-                            "id": "slider1.main-title",
-                            "type": "static",
-                            "format": "title",
-                            "label": "النص الاساسي",
-                            "value": null,
-                            "variant": "h1",
-                            "icon": "sicon-format-text"
-                        },
-                        {
-                            "id": "slider1.description",
-                            "type": "static",
-                            "format": "description",
-                            "label": "النص الفرعي",
-                            "value": null,
-                            "variant": "h1",
-                            "icon": "sicon-format-size"
-                        },
-                        {
                             "id": "slider1.image",
                             "type": "string",
                             "format": "image",
@@ -1082,6 +1064,36 @@
                             "required": true
                         },
                         {
+                            "id": "slider1.subtitl",
+                            "type": "string",
+                            "format": "text",
+                            "label": "sub title",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "Placeholder text ..",
+                            "icon": "sicon-format-text-alt",
+                            "value": null,
+                            "multilanguage": false,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
+                            "id": "slider1.title",
+                            "type": "string",
+                            "format": "text",
+                            "label": "عنوان",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "Placeholder text ..",
+                            "icon": "sicon-format-text-alt",
+                            "value": null,
+                            "multilanguage": false,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
                             "id": "slider1.text",
                             "type": "string",
                             "format": "text",
@@ -1092,6 +1104,21 @@
                             "icon": "sicon-format-text-alt",
                             "value": null,
                             "multilanguage": false,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
+                            "id": "slider1.link",
+                            "type": "string",
+                            "format": "url",
+                            "inputType": "url",
+                            "label": "link",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://salla.sa",
+                            "icon": "sicon-link",
+                            "value": null,
                             "required": false,
                             "minLength": 6,
                             "maxLength": 30
