@@ -3,24 +3,34 @@
     <div slot="items">
       {% for banner in component.slider1 %}
       <div
-        class="bg-no-repeat bg-cover swiper-slide swiper-lazy-wrap"
-        style="background-color: black; background-image: url('{{
-          banner.image
-        }}')"
+        class="swiper-slide swiper-lazy-wrap relative home-slide js-home-slide"
       >
+        <img
+          src="{{ banner.image }}"
+          alt=""
+          class="w-full h-auto object-contain home-slide__img"
+          loading="lazy"
+        />
+
         <div
-          class="container flex text-center items-center justify-center sm:justify-start ltr:sm:justify-end px-8 py-16 lg:px-12 lg:py-20 home-slider__content relative h-full"
+          class="absolute inset-0 container flex items-center justify-end px-8 py-16 lg:px-12 lg:py-20 home-slider__content"
         >
-          <div class="text-white w-full">
-            <p data-swiper-parallax="-700">
-              {{ banner.description }}
-            </p>
-            <h3 class="" data-swiper-parallax="-300">
-              {{ banner.main - title }}
-            </h3>
-            <p data-swiper-parallax="-700">
-              {{ banner.text }}
-            </p>
+          <div class="text-white w-1/2 sm:w-2/3 lg:w-1/3 text-right">
+            <p data-swiper-parallax="-700">{{ banner.subtitl }}</p>
+
+            <h3 data-swiper-parallax="-300">{{ banner.title }}</h3>
+
+            <p data-swiper-parallax="-700">{{ banner.text }}</p>
+
+            {% if banner.link %}
+            <a
+              href="{{ banner.link }}"
+              class="inline-flex items-center justify-center mt-6 px-6 py-3 border border-white/20 bg-black/40 text-white no-underline ms-auto"
+              style="border-radius: 6px"
+            >
+              {{ banner.buttontext }}
+            </a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -28,3 +38,66 @@
     </div>
   </salla-slider>
 </section>
+{% block styleslider %}
+
+<style>
+  /* نخلي كل السلايدز نفس الارتفاع حسب أطول صورة */
+  .home-slide {
+    height: var(--home-slide-h, auto);
+  }
+
+  /* نخلي الصورة تملى ارتفاع السلايد بدون قص */
+  .home-slide__img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  /* موبايل: النص يمين وعرضه نص الصورة */
+  @media (max-width: 639px) {
+    .home-slider__content > div {
+      width: 50% !important;
+      text-align: right !important;
+    }
+  }
+</style>
+{% endblock %} {% block scriptslider %}
+
+<script>
+  (function () {
+    function setMaxSlideHeight() {
+      const slides = document.querySelectorAll(".js-home-slide");
+      if (!slides.length) return;
+
+      let maxH = 0;
+
+      slides.forEach((slide) => {
+        const img = slide.querySelector(".home-slide__img");
+        if (!img) return;
+
+        const h = img.getBoundingClientRect().height;
+        if (h > maxH) maxH = h;
+      });
+
+      if (maxH > 0) {
+        slides.forEach((slide) => {
+          slide.style.setProperty("--home-slide-h", maxH + "px");
+        });
+      }
+    }
+
+    window.addEventListener("load", () => {
+      setMaxSlideHeight();
+      setTimeout(setMaxSlideHeight, 300);
+      setTimeout(setMaxSlideHeight, 900);
+    });
+
+    window.addEventListener("resize", () => {
+      document
+        .querySelectorAll(".js-home-slide")
+        .forEach((s) => s.style.removeProperty("--home-slide-h"));
+      setMaxSlideHeight();
+    });
+  })();
+</script>
+{% endblock %}
