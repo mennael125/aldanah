@@ -61,7 +61,7 @@
     </div>
   </salla-slider>
 
-  <!-- Pagination مخصص (هيظهر أكيد تحت) -->
+  <!-- Pagination مخصص (أكيــد هيظهر) -->
   <div
     class="home-slider__pagination"
     aria-label="Home slider pagination"
@@ -70,14 +70,18 @@
 
 {% block styleslider %}
 <style>
-  /* ==== أساسيات السلايد ==== */
+  /* لازم عشان absolute بتاع pagination يشتغل صح */
+  .home-slider {
+    position: relative !important;
+    overflow: hidden !important; /* يمنع ظهور أجزاء خارج الإطار */
+  }
+
   .home-slide {
     min-height: 628px;
     height: var(--home-slide-h, auto);
     user-select: none;
     -webkit-user-select: none;
   }
-
   @media (min-width: 1024px) {
     .home-slide {
       min-height: 750px;
@@ -88,10 +92,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    pointer-events: none; /* يمنع لخبطة/hover على الصورة */
+    pointer-events: none;
   }
 
-  /* خلي Swiper RTL فعلياً */
+  /* === أهم سطرين لتخلي كل سلايد يملأ العرض === */
+  .home-slider .swiper-slide {
+    width: 100% !important;
+  }
+  .home-slider .swiper {
+    overflow: hidden !important;
+  }
+
+  /* RTL */
   .home-slider,
   .home-slider .swiper,
   .home-slider .swiper-wrapper {
@@ -130,7 +142,7 @@
     }
   }
 
-  /* ===== إخفاء الأسهم (كل الاحتمالات) ===== */
+  /* إخفاء الأسهم (احتياط) */
   .home-slider .swiper-button-next,
   .home-slider .swiper-button-prev,
   .home-slider [class*="swiper-button-"],
@@ -146,189 +158,166 @@
     pointer-events: none !important;
   }
 
-  /* لو سلة بت expose parts داخل salla-slider */
-  salla-slider::part(next),
-  salla-slider::part(prev),
-  salla-slider::part(navigation),
-  salla-slider::part(arrows) {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-
-  /* ===== Pagination مخصص تحت ===== */
+  /* Pagination مخصص (خليه تحت ووسط/يمين براحتك) */
   .home-slider__pagination {
     position: absolute;
-    right: 24px;
+    left: 0;
+    right: 0;
     bottom: 18px;
-    z-index: 60;
+    z-index: 999;
     display: flex;
+    justify-content: center; /* لو عايزه يمين: خليها flex-end */
     align-items: center;
-    justify-content: flex-end;
     gap: 10px;
     pointer-events: auto;
   }
 
-  @media (max-width: 639px) {
-    .home-slider__pagination {
-      right: 16px;
-      bottom: 12px;
-      gap: 8px;
-    }
-  }
-
-  .home-slider__pagination .swiper-pagination-bullet {
+  .home-slider__pagination .p-bullet {
     width: 10px;
     height: 10px;
     border-radius: 999px;
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.35);
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    margin: 0 !important;
+    transition: all 0.2s ease;
   }
 
-  .home-slider__pagination .swiper-pagination-bullet-active {
+  .home-slider__pagination .p-bullet.is-active {
     width: 26px;
     height: 10px;
-    border-radius: 999px;
-    background: #ffffff;
+    background: #fff;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+  }
+
+  @media (max-width: 639px) {
+    .home-slider__pagination {
+      bottom: 12px;
+      gap: 8px;
+    }
   }
 </style>
 {% endblock %} {% block scriptslider %}
 <script>
   (function () {
-    function setMinHeightOnly() {
-      document.querySelectorAll(".js-home-slide").forEach((slide) => {
-        slide.style.removeProperty("--home-slide-h");
-      });
-    }
-
-    function disableParallaxAttrs() {
-      document
-        .querySelectorAll(".home-slider [data-swiper-parallax]")
-        .forEach((el) => el.removeAttribute("data-swiper-parallax"));
-    }
-
     function getSwiperInstance(el) {
       if (!el) return null;
       return el.swiper || el._swiper || el.slider?.swiper || null;
     }
 
-    function hideArrowsHard() {
-      const sallaEl = document.querySelector(".home-slider salla-slider");
-      if (!sallaEl) return;
-
-      // خارج الشادو
-      document
-        .querySelectorAll(
-          ".home-slider .swiper-button-next,.home-slider .swiper-button-prev,.home-slider [class*='swiper-button-'],.home-slider .s-slider-nav,.home-slider .s-slider__nav"
-        )
-        .forEach((el) => el.style.setProperty("display", "none", "important"));
-
-      // داخل الشادو (لو موجود)
-      try {
-        const root = sallaEl.shadowRoot;
-        if (root) {
-          root
-            .querySelectorAll(
-              ".swiper-button-next,.swiper-button-prev,[class*='swiper-button-'],.s-slider-nav,.s-slider__nav,button"
-            )
-            .forEach((el) =>
-              el.style.setProperty("display", "none", "important")
-            );
-        }
-      } catch (e) {}
-    }
-
-    function applyFixes() {
-      const sallaEl = document.querySelector(".home-slider salla-slider");
-      const pagerEl = document.querySelector(
-        ".home-slider .home-slider__pagination"
-      );
-      const swiper = getSwiperInstance(sallaEl);
-      if (!swiper || !pagerEl) return false;
-
-      // RTL صحيح للسحب
-      try {
-        if (typeof swiper.changeLanguageDirection === "function") {
-          swiper.changeLanguageDirection("rtl");
-        }
-      } catch (e) {}
-
-      // وقف “التحريك مع الماوس” (mousewheel/freeMode/parallax/followFinger)
+    function killParallaxAndWeirdMove(swiper) {
+      // وقف أي “تحريك مع الماوس/بارالاكس”
       try {
         swiper.params.parallax = false;
+      } catch (e) {}
+      try {
+        swiper.params.mousewheel = false;
+      } catch (e) {}
+      try {
+        if (
+          swiper.mousewheel &&
+          typeof swiper.mousewheel.disable === "function"
+        )
+          swiper.mousewheel.disable();
       } catch (e) {}
       try {
         swiper.params.freeMode = false;
         swiper.params.freeModeMomentum = false;
       } catch (e) {}
 
+      // امسح أي parallax attrs
       try {
-        swiper.params.mousewheel = false;
-        if (
-          swiper.mousewheel &&
-          typeof swiper.mousewheel.disable === "function"
-        ) {
-          swiper.mousewheel.disable();
+        document
+          .querySelectorAll(".home-slider [data-swiper-parallax]")
+          .forEach((el) => el.removeAttribute("data-swiper-parallax"));
+      } catch (e) {}
+    }
+
+    function forceFullSlide(swiper) {
+      // ده اللي بيخلي “الصورة كلها تتغير ع طول”
+      try {
+        swiper.params.slidesPerView = 1;
+        swiper.params.slidesPerGroup = 1;
+        swiper.params.centeredSlides = false;
+        swiper.params.spaceBetween = 0;
+        swiper.params.effect = "slide";
+      } catch (e) {}
+    }
+
+    function buildCustomPagination(swiper, pagerEl) {
+      if (!swiper || !pagerEl) return;
+
+      function render() {
+        const count = swiper.slides ? swiper.slides.length : 0;
+        if (!count) return;
+
+        pagerEl.innerHTML = "";
+        for (let i = 0; i < count; i++) {
+          const b = document.createElement("span");
+          b.className =
+            "p-bullet" + (i === swiper.realIndex ? " is-active" : "");
+          b.setAttribute("role", "button");
+          b.setAttribute("tabindex", "0");
+          b.addEventListener("click", () => {
+            // لو loop شغال: استخدم slideToLoop
+            if (typeof swiper.slideToLoop === "function") swiper.slideToLoop(i);
+            else swiper.slideTo(i);
+          });
+          pagerEl.appendChild(b);
         }
-      } catch (e) {}
+      }
 
-      // بيقلل الإحساس بالهز/الانجراف
+      function setActive() {
+        const bullets = pagerEl.querySelectorAll(".p-bullet");
+        bullets.forEach((b, idx) =>
+          b.classList.toggle("is-active", idx === swiper.realIndex)
+        );
+      }
+
+      render();
+      setActive();
+
+      swiper.on("slideChange", setActive);
+      swiper.on("resize", () => {
+        render();
+        setActive();
+      });
+    }
+
+    function applyAll() {
+      const sallaEl = document.querySelector(".home-slider salla-slider");
+      const pagerEl = document.querySelector(
+        ".home-slider .home-slider__pagination"
+      );
+      const swiper = getSwiperInstance(sallaEl);
+      if (!swiper) return false;
+
+      // RTL
       try {
-        swiper.params.followFinger = true;
-        swiper.params.threshold = 10;
-        swiper.params.touchStartPreventDefault = false;
-        swiper.params.simulateTouch = true;
-        swiper.params.allowTouchMove = true;
+        if (typeof swiper.changeLanguageDirection === "function")
+          swiper.changeLanguageDirection("rtl");
       } catch (e) {}
 
-      // Pagination مخصص (Bullets) على العنصر اللي عملناه
-      try {
-        swiper.params.pagination = swiper.params.pagination || {};
-        swiper.params.pagination.el = pagerEl;
-        swiper.params.pagination.type = "bullets";
-        swiper.params.pagination.clickable = true;
+      forceFullSlide(swiper);
+      killParallaxAndWeirdMove(swiper);
 
-        if (swiper.pagination) {
-          swiper.pagination.destroy();
-          swiper.pagination.init();
-          swiper.pagination.render();
-          swiper.pagination.update();
-        }
-      } catch (e) {}
-
-      disableParallaxAttrs();
-      hideArrowsHard();
+      // Pagination مضمون
+      buildCustomPagination(swiper, pagerEl);
 
       try {
         swiper.update();
+        swiper.updateSlides();
+        swiper.updateSize();
       } catch (e) {}
       return true;
     }
 
     window.addEventListener("load", () => {
-      setMinHeightOnly();
-      disableParallaxAttrs();
-
       let tries = 0;
       const t = setInterval(() => {
         tries++;
-        const ok = applyFixes();
+        const ok = applyAll();
         if (ok || tries >= 30) clearInterval(t);
       }, 200);
-
-      // احتياط إضافي
-      setTimeout(() => {
-        disableParallaxAttrs();
-        hideArrowsHard();
-      }, 800);
     });
-
-    window.addEventListener("resize", setMinHeightOnly);
   })();
 </script>
 {% endblock %}
