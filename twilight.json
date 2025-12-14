@@ -1225,6 +1225,36 @@
                     "icon": "sicon-list-add",
                     "fields": [
                         {
+                            "id": "collectiongrid.url",
+                            "type": "string",
+                            "format": "url",
+                            "inputType": "url",
+                            "label": "URL",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://salla.sa",
+                            "icon": "sicon-link",
+                            "value": null,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
+                            "id": "collectiongrid.des",
+                            "type": "string",
+                            "format": "text",
+                            "label": "String 1",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "Placeholder text ..",
+                            "icon": "sicon-format-text-alt",
+                            "value": null,
+                            "multilanguage": false,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
                             "id": "collectiongrid.titlecat",
                             "type": "string",
                             "format": "text",
