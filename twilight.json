@@ -1206,16 +1206,6 @@
             ]
         },
         {
-            "key": "b6e6fba8-980c-40d6-97b7-041479abaa71",
-            "title": {
-                "en": "catogery",
-                "ar": "التصنيفات"
-            },
-            "icon": "sicon-store",
-            "path": "catogery",
-            "fields": []
-        },
-        {
             "key": "4295b55e-2ca6-426a-857d-786ae7a15f92",
             "title": {
                 "en": "catogery",
