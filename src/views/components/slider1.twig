@@ -60,6 +60,12 @@
       {% endfor %}
     </div>
   </salla-slider>
+
+  <!-- Pagination مخصص (هيظهر أكيد تحت) -->
+  <div
+    class="home-slider__pagination"
+    aria-label="Home slider pagination"
+  ></div>
 </section>
 
 {% block styleslider %}
@@ -70,10 +76,6 @@
     height: var(--home-slide-h, auto);
     user-select: none;
     -webkit-user-select: none;
-    cursor: grab;
-  }
-  .home-slide:active {
-    cursor: grabbing;
   }
 
   @media (min-width: 1024px) {
@@ -85,11 +87,11 @@
   .home-slide__img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* خليه cover ثابت */
-    pointer-events: none; /* يمنع لخبطة سحب الماوس على الصورة */
+    object-fit: cover;
+    pointer-events: none; /* يمنع لخبطة/hover على الصورة */
   }
 
-  /* خلي الـ Swiper نفسه RTL عشان السحب يبقى طبيعي */
+  /* خلي Swiper RTL فعلياً */
   .home-slider,
   .home-slider .swiper,
   .home-slider .swiper-wrapper {
@@ -128,64 +130,71 @@
     }
   }
 
-  /* اخفاء الاسهم (زي ما انت عايز) */
+  /* ===== إخفاء الأسهم (كل الاحتمالات) ===== */
   .home-slider .swiper-button-next,
   .home-slider .swiper-button-prev,
-  .home-slider [class*="swiper-button-"] {
+  .home-slider [class*="swiper-button-"],
+  .home-slider .s-slider-nav,
+  .home-slider .s-slider__nav,
+  .home-slider button[aria-label*="Next"],
+  .home-slider button[aria-label*="Prev"],
+  .home-slider button[aria-label*="التالي"],
+  .home-slider button[aria-label*="السابق"] {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 
-  /* ==== Pagination (Bullets) ==== */
-  .home-slider .swiper-pagination {
-    display: flex !important;
+  /* لو سلة بت expose parts داخل salla-slider */
+  salla-slider::part(next),
+  salla-slider::part(prev),
+  salla-slider::part(navigation),
+  salla-slider::part(arrows) {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* ===== Pagination مخصص تحت ===== */
+  .home-slider__pagination {
+    position: absolute;
+    right: 24px;
+    bottom: 18px;
+    z-index: 60;
+    display: flex;
     align-items: center;
-    justify-content: flex-end !important;
+    justify-content: flex-end;
     gap: 10px;
-    bottom: 18px !important;
-    left: auto !important;
-    right: 24px !important;
-    width: auto !important;
-    z-index: 60 !important;
-    pointer-events: auto !important;
+    pointer-events: auto;
   }
 
-  .home-slider .swiper-pagination-bullet {
-    width: 10px !important;
-    height: 10px !important;
-    border-radius: 999px !important;
-    opacity: 1 !important;
-    background: rgba(255, 255, 255, 0.35) !important;
+  @media (max-width: 639px) {
+    .home-slider__pagination {
+      right: 16px;
+      bottom: 12px;
+      gap: 8px;
+    }
+  }
+
+  .home-slider__pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.35);
     transition: all 0.2s ease;
     cursor: pointer;
     margin: 0 !important;
   }
 
-  .home-slider .swiper-pagination-bullet-active {
-    width: 26px !important;
-    height: 10px !important;
-    border-radius: 999px !important;
-    background: #ffffff !important;
+  .home-slider__pagination .swiper-pagination-bullet-active {
+    width: 26px;
+    height: 10px;
+    border-radius: 999px;
+    background: #ffffff;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
-  }
-
-  /* مهم: ما نخبيش progressbar هنا عشان لو اتولد بالغلط،
-     والـ JS تحت هيحوّله Bullets أصلاً */
-  .home-slider .swiper-pagination-progressbar {
-    height: 6px !important;
-    border-radius: 999px !important;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.25) !important;
-  }
-  .home-slider .swiper-pagination-progressbar-fill {
-    background: #fff !important;
-  }
-
-  @media (max-width: 639px) {
-    .home-slider .swiper-pagination {
-      right: 16px !important;
-      bottom: 12px !important;
-      gap: 8px;
-    }
   }
 </style>
 {% endblock %} {% block scriptslider %}
@@ -197,22 +206,50 @@
       });
     }
 
-    function disableParallax() {
+    function disableParallaxAttrs() {
       document
         .querySelectorAll(".home-slider [data-swiper-parallax]")
         .forEach((el) => el.removeAttribute("data-swiper-parallax"));
     }
 
-    // يحاول يمسك Swiper instance من سلايدر سلة
     function getSwiperInstance(el) {
       if (!el) return null;
       return el.swiper || el._swiper || el.slider?.swiper || null;
     }
 
-    function forceRtlAndBullets() {
+    function hideArrowsHard() {
       const sallaEl = document.querySelector(".home-slider salla-slider");
+      if (!sallaEl) return;
+
+      // خارج الشادو
+      document
+        .querySelectorAll(
+          ".home-slider .swiper-button-next,.home-slider .swiper-button-prev,.home-slider [class*='swiper-button-'],.home-slider .s-slider-nav,.home-slider .s-slider__nav"
+        )
+        .forEach((el) => el.style.setProperty("display", "none", "important"));
+
+      // داخل الشادو (لو موجود)
+      try {
+        const root = sallaEl.shadowRoot;
+        if (root) {
+          root
+            .querySelectorAll(
+              ".swiper-button-next,.swiper-button-prev,[class*='swiper-button-'],.s-slider-nav,.s-slider__nav,button"
+            )
+            .forEach((el) =>
+              el.style.setProperty("display", "none", "important")
+            );
+        }
+      } catch (e) {}
+    }
+
+    function applyFixes() {
+      const sallaEl = document.querySelector(".home-slider salla-slider");
+      const pagerEl = document.querySelector(
+        ".home-slider .home-slider__pagination"
+      );
       const swiper = getSwiperInstance(sallaEl);
-      if (!swiper) return false;
+      if (!swiper || !pagerEl) return false;
 
       // RTL صحيح للسحب
       try {
@@ -221,55 +258,77 @@
         }
       } catch (e) {}
 
-      // تحسين سحب الماوس (لو مسموح)
+      // وقف “التحريك مع الماوس” (mousewheel/freeMode/parallax/followFinger)
       try {
-        swiper.params.grabCursor = true;
-        swiper.params.simulateTouch = true;
-        swiper.params.allowTouchMove = true;
-        swiper.params.threshold = 5;
+        swiper.params.parallax = false;
+      } catch (e) {}
+      try {
+        swiper.params.freeMode = false;
+        swiper.params.freeModeMomentum = false;
       } catch (e) {}
 
-      // اجبار الـ pagination تبقى bullets (بدل progressbar اللي كان بيختفي)
       try {
-        if (swiper.params.pagination) {
-          swiper.params.pagination.type = "bullets";
-          swiper.params.pagination.clickable = true;
-
-          // إعادة تهيئة الـ pagination
-          if (swiper.pagination) {
-            swiper.pagination.destroy();
-            swiper.pagination.init();
-            swiper.pagination.render();
-            swiper.pagination.update();
-          }
+        swiper.params.mousewheel = false;
+        if (
+          swiper.mousewheel &&
+          typeof swiper.mousewheel.disable === "function"
+        ) {
+          swiper.mousewheel.disable();
         }
       } catch (e) {}
 
-      // تحديث نهائي
+      // بيقلل الإحساس بالهز/الانجراف
+      try {
+        swiper.params.followFinger = true;
+        swiper.params.threshold = 10;
+        swiper.params.touchStartPreventDefault = false;
+        swiper.params.simulateTouch = true;
+        swiper.params.allowTouchMove = true;
+      } catch (e) {}
+
+      // Pagination مخصص (Bullets) على العنصر اللي عملناه
+      try {
+        swiper.params.pagination = swiper.params.pagination || {};
+        swiper.params.pagination.el = pagerEl;
+        swiper.params.pagination.type = "bullets";
+        swiper.params.pagination.clickable = true;
+
+        if (swiper.pagination) {
+          swiper.pagination.destroy();
+          swiper.pagination.init();
+          swiper.pagination.render();
+          swiper.pagination.update();
+        }
+      } catch (e) {}
+
+      disableParallaxAttrs();
+      hideArrowsHard();
+
       try {
         swiper.update();
       } catch (e) {}
-
       return true;
     }
 
     window.addEventListener("load", () => {
       setMinHeightOnly();
-      disableParallax();
-      setTimeout(disableParallax, 300);
+      disableParallaxAttrs();
 
-      // لأن سلة أحيانًا بتبني السويبر بعد load بشوية
       let tries = 0;
       const t = setInterval(() => {
         tries++;
-        const ok = forceRtlAndBullets();
-        if (ok || tries >= 20) clearInterval(t);
+        const ok = applyFixes();
+        if (ok || tries >= 30) clearInterval(t);
       }, 200);
+
+      // احتياط إضافي
+      setTimeout(() => {
+        disableParallaxAttrs();
+        hideArrowsHard();
+      }, 800);
     });
 
-    window.addEventListener("resize", () => {
-      setMinHeightOnly();
-    });
+    window.addEventListener("resize", setMinHeightOnly);
   })();
 </script>
 {% endblock %}
