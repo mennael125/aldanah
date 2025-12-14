@@ -1,0 +1,144 @@
+<section class="s-block s-block--video mt-16">
+  <div class="container">
+    <div class="videoWrapper">
+      <video
+        class="bg-video"
+        src="{{ component.urlvid }}"
+        poster="{{ component.vidimage }}"
+        playsinline
+        muted
+        loop
+        preload="metadata"
+      ></video>
+
+      <button type="button" class="video-toggle" aria-label="تشغيل الفيديو">
+        <span class="icon icon-play" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% block stylevideo %}
+<style>
+  .videoWrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16 / 9;
+  }
+
+  .bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-toggle {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 74px;
+    height: 74px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+  }
+
+  .video-toggle:hover {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .icon-play {
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 18px solid #fff;
+    margin-left: 3px;
+  }
+
+  .icon-pause {
+    width: 18px;
+    height: 18px;
+    position: relative;
+  }
+  .icon-pause::before,
+  .icon-pause::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 6px;
+    height: 18px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .icon-pause::before {
+    left: 0;
+  }
+  .icon-pause::after {
+    right: 0;
+  }
+
+  .videoWrapper.is-playing .video-toggle {
+    opacity: 0.9;
+  }
+</style>
+{% endblock %} {% block scriptvideo %}
+<script>
+  (function () {
+    function initVideoBlock(wrapper) {
+      const video = wrapper.querySelector(".bg-video");
+      const btn = wrapper.querySelector(".video-toggle");
+      if (!video || !btn) return;
+
+      function setState(isPlaying) {
+        _toggleIcon(isPlaying);
+        wrapper.classList.toggle("is-playing", isPlaying);
+        btn.setAttribute(
+          "aria-label",
+          isPlaying ? "إيقاف الفيديو" : "تشغيل الفيديو"
+        );
+      }
+
+      function _toggleIcon(isPlaying) {
+        const icon = btn.querySelector(".icon");
+        if (!icon) return;
+        icon.className = "icon " + (isPlaying ? "icon-pause" : "icon-play");
+      }
+
+      setState(false);
+
+      btn.addEventListener("click", async () => {
+        if (video.paused) {
+          try {
+            await video.play();
+            setState(true);
+          } catch (e) {
+            setState(false);
+          }
+        } else {
+          video.pause();
+          setState(false);
+        }
+      });
+
+      video.addEventListener("play", () => setState(true));
+      video.addEventListener("pause", () => setState(false));
+    }
+
+    window.addEventListener("load", () => {
+      document.querySelectorAll(".videoWrapper").forEach(initVideoBlock);
+    });
+  })();
+</script>
+{% endblock %}
