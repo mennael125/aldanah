@@ -1040,7 +1040,83 @@
             },
             "icon": "sicon-store",
             "path": "slider1",
-            "fields": []
+            "fields": [
+                {
+                    "id": "slider1",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "محتويات  الصوره المتحركه",
+                    "description": "محتويات  الصوره المتحركه",
+                    "labelHTML": null,
+                    "item_label": null,
+                    "icon": "sicon-list-add",
+                    "fields": [
+                        {
+                            "id": "slider1.alns_alasase",
+                            "type": "static",
+                            "format": "title",
+                            "label": "النص الاساسي",
+                            "value": null,
+                            "variant": "h1",
+                            "icon": "sicon-format-text"
+                        },
+                        {
+                            "id": "slider1.description",
+                            "type": "static",
+                            "format": "description",
+                            "label": "النص الفرعي",
+                            "value": null,
+                            "variant": "h1",
+                            "icon": "sicon-format-size"
+                        },
+                        {
+                            "id": "slider1.url",
+                            "type": "string",
+                            "format": "url",
+                            "inputType": "url",
+                            "label": "URL",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://salla.sa",
+                            "icon": "sicon-link",
+                            "value": null,
+                            "required": true,
+                            "minLength": 6,
+                            "maxLength": 30
+                        },
+                        {
+                            "id": "slider1.image",
+                            "type": "string",
+                            "format": "image",
+                            "label": "Image",
+                            "description": "خلفيه الصورة",
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://hostname.com/image.png",
+                            "icon": "sicon-image",
+                            "value": null,
+                            "required": true
+                        },
+                        {
+                            "id": "slider1.almhtoe_alnse",
+                            "type": "string",
+                            "format": "text",
+                            "label": "المحتوي النصي",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "Placeholder text ..",
+                            "icon": "sicon-format-text-alt",
+                            "value": null,
+                            "multilanguage": false,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": 30
+                        }
+                    ],
+                    "value": [],
+                    "minLength": 1,
+                    "maxLength": 5
+                }
+            ]
         }
     ],
     "support_url": "https://example.com",
