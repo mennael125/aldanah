@@ -1806,6 +1806,10 @@ select {
     padding-top: 18px;
     padding-bottom: 18px;
 }
+.py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
 .\!pt-1 {
     padding-top: 0.25rem !important;
 }
@@ -2120,8 +2124,17 @@ select {
 .outline {
     outline-style: solid;
 }
+.blur {
+    --tw-blur: blur(8px);
+    filter: blur(8px) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
 .filter {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-filter {
+    -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 .transition {
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
@@ -24042,6 +24055,9 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
     .sm\:items-start {
         align-items: flex-start;
     }
+    .sm\:justify-start {
+        justify-content: flex-start;
+    }
     .sm\:gap-4 {
         gap: 1rem;
     }
@@ -24354,6 +24370,14 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
         padding-left: 0px;
         padding-right: 0px;
     }
+    .lg\:px-12 {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+    .lg\:py-20 {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
     .lg\:pb-11 {
         padding-bottom: 2.75rem;
     }
@@ -24487,6 +24511,9 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
     border-left-width: 1px;
 }
 @media (min-width: 640px) {
+    .ltr\:sm\:justify-end:where([dir="ltr"], [dir="ltr"] *) {
+        justify-content: flex-end;
+    }
     .sm\:ltr\:text-left:where([dir="ltr"], [dir="ltr"] *) {
         text-align: left;
     }
