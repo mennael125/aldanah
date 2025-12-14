@@ -1635,16 +1635,10 @@ select {
     border-color: #414042;
     border-color: var(--color-primary);
 }
-.border-white\/20 {
-    border-color: rgba(255, 255, 255, 0.2);
-}
 .bg-black {
     --tw-bg-opacity: 1;
     background-color: rgba(0, 0, 0, 1);
     background-color: rgba(0, 0, 0, var(--tw-bg-opacity, 1));
-}
-.bg-black\/40 {
-    background-color: rgba(0, 0, 0, 0.4);
 }
 .bg-blue-50 {
     --tw-bg-opacity: 1;
