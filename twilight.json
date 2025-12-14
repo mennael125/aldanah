@@ -1204,6 +1204,16 @@
                     "maxLength": 5
                 }
             ]
+        },
+        {
+            "key": "b6e6fba8-980c-40d6-97b7-041479abaa71",
+            "title": {
+                "en": "catogery",
+                "ar": "التصنيفات"
+            },
+            "icon": "sicon-store",
+            "path": "catogery",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
