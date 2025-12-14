@@ -1,0 +1,98 @@
+<section
+  class="s-block s-block--features features-fullwidth"
+  style="background: {{ component.containercolor }};"
+>
+  <div class="features-inner">
+    <div class="features-grid">
+      {% for item in featbox %}
+      <div
+        class="feature-box"
+        style="background: {{ item.boxcolor }}; color: {{ item.text_color }};"
+      >
+        <div class="feature-icon">
+          <img
+            src="{{ item.image }}"
+            alt="{{ item.maintext22 }}"
+            class="feature-icon__img"
+            loading="lazy"
+          />
+        </div>
+
+        <h3 class="feature-title">{{ item.maintext22 }}</h3>
+        <p class="feature-subtitle">{{ item.subtext22 }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% block stylefeatures %}
+<style>
+  .features-fullwidth {
+    width: 100vw;
+    max-width: 100%;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 24px 0;
+  }
+
+  .features-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  .feature-box {
+    border-radius: 14px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .feature-icon__img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .feature-title {
+    margin: 0;
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .feature-subtitle {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.92;
+    line-height: 1.6;
+  }
+</style>
+{% endblock %}
