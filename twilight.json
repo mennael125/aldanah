@@ -1312,17 +1312,17 @@
                 {
                     "id": "urlvid",
                     "type": "string",
-                    "format": "url",
-                    "inputType": "url",
+                    "format": "text",
                     "label": "رابط الفيديو",
-                    "description": "الرابط mp4",
+                    "description": null,
                     "labelHTML": null,
                     "placeholder": "e.g. https://salla.sa",
-                    "icon": "sicon-link",
+                    "icon": "sicon-format-text-alt",
                     "value": null,
-                    "required": true,
+                    "multilanguage": false,
+                    "required": false,
                     "minLength": 6,
-                    "maxLength": "99"
+                    "maxLength": 30
                 },
                 {
                     "id": "vidimage",
