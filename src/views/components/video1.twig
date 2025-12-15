@@ -1,14 +1,20 @@
 <section class="s-block s-block--video mt-16 video-fullwidth">
   <div class="container video-fullwidth__container">
     <div class="videoWrapper">
+      {% if component.urlvid %}
       <video
         class="bg-video"
         playsinline
         muted
         loop
-        preload="auto"
-        poster="{{ component.vidimage }}"
-        crossorigin="anonymous"
+        preload="metadata"
+        {%
+        if
+        component.vidimage
+        %}poster="{{ component.vidimage }}"
+        {%
+        endif
+        %}
         controlsList="nodownload noplaybackrate"
       >
         <source src="{{ component.urlvid }}" type="video/mp4" />
@@ -19,6 +25,11 @@
       </button>
 
       <div class="video-msg" hidden></div>
+      {% else %}
+      <div class="video-empty">
+        لم يتم إدخال رابط فيديو (MP4). يرجى إضافة الرابط من إعدادات المكوّن.
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -31,7 +42,6 @@
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
   }
-
   .video-fullwidth__container {
     max-width: none !important;
     width: 100% !important;
@@ -40,7 +50,6 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-
   .videoWrapper {
     position: relative;
     width: 100%;
@@ -49,7 +58,6 @@
     aspect-ratio: 16/9;
     border-radius: 0;
   }
-
   .bg-video {
     position: absolute;
     inset: 0;
@@ -58,7 +66,6 @@
     object-fit: cover;
     display: block;
   }
-
   .video-toggle {
     position: absolute;
     inset: 0;
@@ -74,11 +81,9 @@
     z-index: 2;
     backdrop-filter: blur(2px);
   }
-
   .video-toggle:hover {
     background: rgba(0, 0, 0, 0.55);
   }
-
   .icon-play {
     width: 0;
     height: 0;
@@ -87,13 +92,11 @@
     border-left: 18px solid #fff;
     margin-left: 3px;
   }
-
   .icon-pause {
     width: 18px;
     height: 18px;
     position: relative;
   }
-
   .icon-pause::before,
   .icon-pause::after {
     content: "";
@@ -104,19 +107,15 @@
     background: #fff;
     border-radius: 2px;
   }
-
   .icon-pause::before {
     left: 0;
   }
-
   .icon-pause::after {
     right: 0;
   }
-
   .videoWrapper.is-playing .video-toggle {
     opacity: 0.9;
   }
-
   .video-msg {
     position: absolute;
     inset: auto 12px 12px 12px;
@@ -129,6 +128,17 @@
     direction: rtl;
     text-align: right;
   }
+  .video-empty {
+    padding: 16px;
+    color: #fff;
+    direction: rtl;
+    text-align: right;
+    background: #000;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
 </style>
 {% endblock %} {% block scriptvideo %}
 <script>
@@ -139,24 +149,24 @@
       const msg = wrapper.querySelector(".video-msg");
       if (!video || !btn) return;
 
-      function showMsg(text) {
+      function showMsg(t) {
         if (!msg) return;
-        msg.hidden = !text;
-        msg.textContent = text || "";
+        msg.hidden = !t;
+        msg.textContent = t || "";
       }
 
-      function toggleIcon(isPlaying) {
-        const icon = btn.querySelector(".icon");
-        if (!icon) return;
-        icon.className = "icon " + (isPlaying ? "icon-pause" : "icon-play");
+      function toggleIcon(p) {
+        const i = btn.querySelector(".icon");
+        if (!i) return;
+        i.className = "icon " + (p ? "icon-pause" : "icon-play");
       }
 
-      function setState(isPlaying) {
-        toggleIcon(isPlaying);
-        wrapper.classList.toggle("is-playing", isPlaying);
+      function setState(p) {
+        toggleIcon(p);
+        wrapper.classList.toggle("is-playing", p);
         btn.setAttribute(
           "aria-label",
-          isPlaying ? "إيقاف تشغيل الفيديو" : "تشغيل الفيديو"
+          p ? "إيقاف تشغيل الفيديو" : "تشغيل الفيديو"
         );
       }
 
@@ -173,17 +183,17 @@
         try {
           if (video.readyState === 0) video.load();
           video.muted = true;
-
-          const p = video.play();
-          if (p && typeof p.then === "function") await p;
-
+          const r = video.play();
+          if (r && typeof r.then === "function") await r;
           video.removeAttribute("poster");
           setState(true);
         } catch (e) {
           setState(false);
-          showMsg(
-            "تعذّر تشغيل الفيديو. يُرجى التحقق من صلاحية الرابط وإعدادات الاستضافة."
-          );
+          const err =
+            e && e.name
+              ? e.name + (e.message ? ": " + e.message : "")
+              : String(e);
+          showMsg("تعذّر تشغيل الفيديو: " + err);
           console.log("Video play blocked/error:", e);
         }
       }
@@ -205,18 +215,14 @@
       video.addEventListener("pause", () => setState(false));
 
       video.addEventListener("error", () => {
-        const code = video.error ? video.error.code : "";
+        const c = video.error ? video.error.code : "";
         setState(false);
-        showMsg(
-          "حدث خطأ أثناء تحميل الفيديو. يُرجى تجربة رابط مباشر آخر بصيغة MP4. (رمز الخطأ: " +
-            code +
-            ")"
-        );
+        showMsg("حدث خطأ أثناء تحميل الفيديو. (رمز الخطأ: " + c + ")");
       });
 
-      video.addEventListener("stalled", () => {
-        showMsg("جاري محاولة استكمال التحميل…");
-      });
+      video.addEventListener("stalled", () =>
+        showMsg("جاري محاولة استكمال التحميل…")
+      );
 
       video.addEventListener("canplay", () => {
         if (!video.paused) showMsg("");
