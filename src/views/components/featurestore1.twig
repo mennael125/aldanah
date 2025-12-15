@@ -1,97 +1,13 @@
-{# ========================= Section: featurestore key:
-0926489f-f975-4284-bc15-90de1cb29c6e path: featurestore1
-========================= #}
-
-<section
-  class="salla-featurestore"
-  style="
-    --fs-container-bg: {{ section.settings.containercolor|default('#F7F7F7') }};
-    --fs-box-bg: {{ section.settings.boxcolor|default('#FFFFFF') }};
-    --fs-text-color: {{ section.settings.text_color|default('#111111') }};
-  "
->
-  <div class="container">
-    <div class="salla-featurestore-grid">
-      {% set items = section.settings.featbox|default([]) %} {% for item in
-      items %}
-      <div class="salla-featurestore-box">
-        {% if item.image %}
-        <div class="salla-featurestore-img">
-          <img
-            src="{{ item.image }}"
-            alt="{{ item.maintext22|default('')|e }}"
-            loading="lazy"
-          />
-        </div>
-        {% endif %} {% if item.maintext22 %}
-        <h3 class="salla-featurestore-title">{{ item.maintext22 }}</h3>
-        {% endif %} {% if item.subtext22 %}
-        <p class="salla-featurestore-desc">{{ item.subtext22 }}</p>
-        {% endif %}
-      </div>
+<section class="s-block s-block--features container">
+    <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] md:grid-cols-[repeat(3,minmax(0,1fr))] gap-4 sm:gap-6 xl:gap-8">
+      {% for item in component.featbox %}
+          <div class="s-block--features__item">
+            <div class="feature-icon">
+              <img class="{{ item.image }}"></img>
+            </div>
+            <h2>{{ item.maintext22 }}</h2>
+            <p>{{ item.subtext22 }}</p>
+          </div>
       {% endfor %}
     </div>
-  </div>
 </section>
-
-<style>
-  .salla-featurestore {
-    background: var(--fs-container-bg);
-    padding: 32px 0;
-  }
-
-  .salla-featurestore-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  @media (max-width: 991px) {
-    .salla-featurestore-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 575px) {
-    .salla-featurestore-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .salla-featurestore-box {
-    background: var(--fs-box-bg);
-    border-radius: 14px;
-    padding: 18px 16px;
-    text-align: center;
-    color: var(--fs-text-color);
-    height: 100%;
-  }
-
-  .salla-featurestore-img {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-
-  .salla-featurestore-img img {
-    width: 84px;
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .salla-featurestore-title {
-    margin: 0 0 8px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--fs-text-color);
-  }
-
-  .salla-featurestore-desc {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.7;
-    opacity: 0.95;
-    color: var(--fs-text-color);
-  }
-</style>
