@@ -1082,6 +1082,9 @@ select {
 .mt-8 {
     margin-top: 2rem;
 }
+.mb-\[28px\] {
+    margin-bottom: 28px;
+}
 .line-clamp-1 {
     overflow: hidden;
     display: -webkit-box;
@@ -1223,6 +1226,9 @@ select {
 .min-h-screen {
     min-height: 100vh;
 }
+.min-h-\[259px\] {
+    min-height: 259px;
+}
 .\!w-36 {
     width: 9rem !important;
 }
@@ -1298,6 +1304,9 @@ select {
 .max-w-xs {
     max-width: 20rem;
 }
+.max-w-\[418px\] {
+    max-width: 418px;
+}
 .flex-1 {
     flex: 1 1 0%;
 }
@@ -1357,6 +1366,9 @@ select {
 .grid-cols-\[repeat\(2\2c minmax\(0\2c 1fr\)\)\] {
     grid-template-columns: repeat(2,minmax(0,1fr));
 }
+.grid-cols-\[repeat\(1\2c minmax\(0\2c 1fr\)\)\] {
+    grid-template-columns: repeat(1,minmax(0,1fr));
+}
 .flex-row {
     flex-direction: row;
 }
@@ -1393,6 +1405,9 @@ select {
 .justify-around {
     justify-content: space-around;
 }
+.justify-items-center {
+    justify-items: center;
+}
 .gap-1 {
     gap: 0.25rem;
 }
@@ -1413,6 +1428,12 @@ select {
 }
 .gap-8 {
     gap: 2rem;
+}
+.gap-\[22px\] {
+    gap: 22px;
+}
+.gap-\[31px\] {
+    gap: 31px;
 }
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0;
@@ -1555,8 +1576,14 @@ select {
 .text-ellipsis {
     text-overflow: ellipsis;
 }
+.whitespace-normal {
+    white-space: normal;
+}
 .whitespace-nowrap {
     white-space: nowrap;
+}
+.break-words {
+    word-wrap: break-word;
 }
 .break-all {
     word-break: break-all;
@@ -1817,6 +1844,14 @@ select {
     padding-top: 18px;
     padding-bottom: 18px;
 }
+.px-\[71px\] {
+    padding-left: 71px;
+    padding-right: 71px;
+}
+.py-\[60px\] {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
 .\!pt-1 {
     padding-top: 0.25rem !important;
 }
@@ -1892,6 +1927,9 @@ select {
 .text-end {
     text-align: right;
 }
+.align-middle {
+    vertical-align: middle;
+}
 .text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -1927,6 +1965,12 @@ select {
 .text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
+}
+.text-\[16px\] {
+    font-size: 16px;
+}
+.text-\[24px\] {
+    font-size: 24px;
 }
 .font-bold {
     font-weight: 700;
@@ -1969,6 +2013,9 @@ select {
 }
 .leading-tight {
     line-height: 1.25;
+}
+.leading-\[1\] {
+    line-height: 1;
 }
 .\!text-primary {
     color: #414042 !important;

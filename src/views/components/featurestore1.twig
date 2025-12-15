@@ -1,13 +1,105 @@
-<section class="s-block s-block--features container">
-    <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] md:grid-cols-[repeat(3,minmax(0,1fr))] gap-4 sm:gap-6 xl:gap-8">
-      {% for item in component.featbox %}
-          <div class="s-block--features__item">
-            <div class="feature-icon">
-              <img class="{{ item.image }}"></img>
-            </div>
-            <h2>{{ item.maintext22 }}</h2>
-            <p>{{ item.subtext22 }}</p>
-          </div>
-      {% endfor %}
+<section
+  class="s-block s-block--features"
+  style="background: {{ component.containercolor|default('#004956') }};"
+>
+  <div
+    class="s-block--features__grid grid grid-cols-1 md:grid-cols-3 gap-[22px]"
+  >
+    {% for item in component.featbox %}
+    <div
+      class="s-block--features__item"
+      style="background: {{ component.boxcolor|default('#ffffff') }};"
+    >
+      <div class="feature-image">
+        <img src="{{ item.image }}" alt="" />
+      </div>
+
+      <h2
+        class="feature-title"
+        style="color: {{ component.text_color|default('#004956') }};"
+      >
+        {{ item.maintext22 }}
+      </h2>
+
+      <p
+        class="feature-subtitle"
+        style="color: {{ component.text_color|default('#004956') }};"
+      >
+        {{ item.subtext22 }}
+      </p>
     </div>
+    {% endfor %}
+  </div>
 </section>
+
+{% block styles %}
+<style>
+  .s-block--features {
+    padding: 60px 71px;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .s-block--features {
+      padding: 36px 16px;
+    }
+
+    .s-block--features__item {
+      grid-column: span 2 / span 2;
+      margin-top: 31px;
+    }
+  }
+
+  .s-block--features__grid {
+    justify-items: center;
+  }
+
+  .s-block--features__item {
+    min-height: 259px;
+    max-width: 418px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .feature-image {
+    margin-bottom: 28px;
+  }
+  .feature-image img {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: contain;
+    display: block;
+  }
+
+  .feature-title,
+  .feature-subtitle {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .feature-title {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0;
+    margin: 0 0 16px 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .feature-subtitle {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+</style>
+{% endblock %}

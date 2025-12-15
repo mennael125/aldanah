@@ -1,12 +1,20 @@
 <section class="s-block s-block--banners container">
+  <h3>
+    {{ catogery1.cato }}
+  </h3>
+
   <div class="banners-grid">
     {% for index, banner in component.collectiongrid %}
     <a
       href="{{ banner.url }}"
       aria-label="{{ (banner.titlecat ? banner.titlecat : 'square-banner-' ~ index) | e('html_attr') }}"
       class="banner-card"
-      style="background-image:url('{{ banner.imagecat }}');"
     >
+      <span
+        class="banner-image"
+        style="background-image:url('{{ banner.imagecat }}');"
+      ></span>
+
       {% if banner.titlecat or banner.des %}
       <div class="banner-text">
         {% if banner.titlecat %}
@@ -43,16 +51,22 @@
   .banner-card {
     position: relative;
     display: block;
-    border-radius: 12px;
-    overflow: hidden;
-    min-height: 220px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     text-decoration: none;
   }
 
-  .banner-card::before {
+  .banner-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .banner-image::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -64,11 +78,12 @@
     pointer-events: none;
   }
 
+  /* Desktop/Tablet: النص فوق الصورة يمين تحت */
   .banner-text {
     position: absolute;
     right: 12px;
-    bottom: 12px;
     left: 12px;
+    bottom: 12px;
     z-index: 2;
     text-align: right;
     direction: rtl;
@@ -85,6 +100,25 @@
     margin: 0;
     font-size: 13px;
     opacity: 0.95;
+  }
+
+  /* Mobile: النص تحت الصورة وفي النص */
+  @media (max-width: 768px) {
+    .banner-image::before {
+      display: none;
+    }
+
+    .banner-text {
+      position: static;
+      margin-top: 24px;
+      text-align: center;
+      direction: rtl;
+    }
+
+    .banner-title,
+    .banner-desc {
+      text-align: center;
+    }
   }
 </style>
 {% endblock %} {% block scriptcat %}{% endblock %}
