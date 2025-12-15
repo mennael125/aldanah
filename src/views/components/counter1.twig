@@ -1,0 +1,239 @@
+<section class="s-block s-block--counter" dir="rtl">
+  {% set target = (component.counter|length ? component.counter[0].date_time :
+  '') %}
+
+  <div class="counter-wrap" data-countdown="{{ target|default('')|trim }}">
+    <div class="counter-left">
+      <div class="counter-cells">
+        <div class="cell">
+          <div class="num js-days">00</div>
+          <div class="lbl">أيام</div>
+        </div>
+        <div class="cell">
+          <div class="num js-hours">00</div>
+          <div class="lbl">ساعات</div>
+        </div>
+        <div class="cell">
+          <div class="num js-mins">00</div>
+          <div class="lbl">دقائق</div>
+        </div>
+        <div class="cell">
+          <div class="num js-secs">00</div>
+          <div class="lbl">ثواني</div>
+        </div>
+      </div>
+
+      {% if component.maintextcount %}
+      <h3 class="counter-title">{{ component.maintextcount }}</h3>
+      {% endif %} {% if component.subtextcount %}
+      <p class="counter-sub">{{ component.subtextcount }}</p>
+      {% endif %}
+
+      <div class="counter-msg" hidden></div>
+    </div>
+
+    <div class="counter-right">
+      {% if component.imagecount %}
+      <img
+        class="counter-image"
+        src="{{ component.imagecount }}"
+        alt=""
+        loading="lazy"
+      />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% block stylecounter %}
+<style>
+  .s-block--counter {
+    padding: 40px 0;
+  }
+  .counter-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 423px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .counter-left {
+    padding: 48px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .counter-cells {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    justify-items: center;
+    margin-bottom: 28px;
+  }
+
+  .cell {
+    width: 96px;
+    height: 96px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .cell .num {
+    font-family: Cairo, sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .cell .lbl {
+    font-family: Cairo, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.75;
+    margin-top: 8px;
+  }
+
+  .counter-title {
+    font-family: Cairo, sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 14px 0;
+  }
+
+  .counter-sub {
+    font-family: Cairo, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .counter-right {
+    background: #eee;
+  }
+  .counter-image {
+    width: 100%;
+    height: 100%;
+    min-height: 483px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .counter-msg {
+    margin-top: 14px;
+    font-family: Cairo, sans-serif;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 767px) {
+    .counter-wrap {
+      grid-template-columns: 1fr;
+    }
+    .counter-right {
+      order: 1;
+    }
+    .counter-left {
+      order: 2;
+      padding: 28px 16px;
+    }
+    .counter-image {
+      min-height: 320px;
+    }
+    .cell {
+      width: 78px;
+      height: 78px;
+    }
+    .cell .num {
+      font-size: 22px;
+    }
+    .counter-title {
+      font-size: 28px;
+    }
+  }
+</style>
+{% endblock %} {% block scriptcounter %}
+<script>
+  (function () {
+    function pad2(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function parseLocalDateTime(dt) {
+      if (!dt) return null;
+      var d = new Date(dt); // "YYYY-MM-DDTHH:mm" -> local time
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    function initCountdown(wrap) {
+      var targetStr = (wrap.getAttribute("data-countdown") || "").trim();
+      var target = parseLocalDateTime(targetStr);
+
+      var msg = wrap.querySelector(".counter-msg");
+      var dEl = wrap.querySelector(".js-days");
+      var hEl = wrap.querySelector(".js-hours");
+      var mEl = wrap.querySelector(".js-mins");
+      var sEl = wrap.querySelector(".js-secs");
+
+      function showMsg(t) {
+        if (!msg) return;
+        msg.hidden = !t;
+        msg.textContent = t || "";
+      }
+
+      if (!target) {
+        showMsg("⚠️ من فضلك حدّد تاريخ/وقت صحيح للعداد.");
+        return;
+      }
+
+      function tick() {
+        var now = new Date();
+        var diff = target.getTime() - now.getTime();
+
+        if (diff <= 0) {
+          dEl.textContent = "00";
+          hEl.textContent = "00";
+          mEl.textContent = "00";
+          sEl.textContent = "00";
+          showMsg("انتهت المدة");
+          clearInterval(t);
+          return;
+        }
+
+        var total = Math.floor(diff / 1000);
+        var days = Math.floor(total / 86400);
+        var rem = total % 86400;
+        var hours = Math.floor(rem / 3600);
+        rem = rem % 3600;
+        var mins = Math.floor(rem / 60);
+        var secs = rem % 60;
+
+        dEl.textContent = String(days);
+        hEl.textContent = pad2(hours);
+        mEl.textContent = pad2(mins);
+        sEl.textContent = pad2(secs);
+        showMsg("");
+      }
+
+      tick();
+      var t = setInterval(tick, 1000);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document
+        .querySelectorAll(".s-block--counter .counter-wrap[data-countdown]")
+        .forEach(initCountdown);
+    });
+  })();
+</script>
+{% endblock %}
