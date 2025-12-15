@@ -1,5 +1,10 @@
 <section class="s-block s-block--counter" dir="rtl">
-  {% set target = attribute(component, 'counter.date_time')|default('')|trim %}
+  {% set target = ( section.settings.counterdate ?? attribute(section.settings,
+  'counterdate') ?? section.settings.get('counterdate') ??
+  section.settings['counterdate'] ?? component.counterdate ??
+  attribute(component, 'counterdate') ?? component.get('counterdate') ??
+  component['counterdate'] ?? component['counter.date_time'] ??
+  attribute(component, 'counter.date_time') ?? '' )|default('')|trim %}
 
   <div class="counter-wrap" data-countdown="{{ target }}">
     <div class="counter-left">
@@ -22,23 +27,30 @@
         </div>
       </div>
 
-      {% if component.maintextcount %}
-      <h3 class="counter-title">{{ component.maintextcount }}</h3>
-      {% endif %} {% if component.subtextcount %}
-      <p class="counter-sub">{{ component.subtextcount }}</p>
+      {% set mainText = section.settings.maintextcount ??
+      attribute(section.settings,'maintextcount') ??
+      section.settings.get('maintextcount') ?? component.maintextcount ??
+      attribute(component,'maintextcount') ?? '' %} {% set subText =
+      section.settings.subtextcount ??
+      attribute(section.settings,'subtextcount') ??
+      section.settings.get('subtextcount') ?? component.subtextcount ??
+      attribute(component,'subtextcount') ?? '' %} {% if mainText %}
+      <h3 class="counter-title">{{ mainText }}</h3>
+      {% endif %} {% if subText %}
+      <p class="counter-sub">{{ subText }}</p>
       {% endif %}
 
       <div class="counter-msg" hidden></div>
     </div>
 
+    {% set imgSrc = section.settings.imagecount ??
+    attribute(section.settings,'imagecount') ??
+    section.settings.get('imagecount') ?? component.imagecount ??
+    attribute(component,'imagecount') ?? '' %}
+
     <div class="counter-right">
-      {% if component.imagecount %}
-      <img
-        class="counter-image"
-        src="{{ component.imagecount }}"
-        alt=""
-        loading="lazy"
-      />
+      {% if imgSrc %}
+      <img class="counter-image" src="{{ imgSrc }}" alt="" loading="lazy" />
       {% endif %}
     </div>
   </div>
@@ -174,19 +186,19 @@
       return String(n).padStart(2, "0");
     }
 
-    function parseDateTimeLocal(dt) {
+    function parseISO(dt) {
       if (!dt) return null;
       dt = String(dt).trim();
-      var m = dt.match(
+      var iso = dt.match(
         /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/
       );
-      if (!m) return null;
-      var y = +m[1],
-        mo = +m[2] - 1,
-        d = +m[3],
-        h = +m[4],
-        mi = +m[5],
-        s = +(m[6] || 0);
+      if (!iso) return null;
+      var y = +iso[1],
+        mo = +iso[2] - 1,
+        d = +iso[3],
+        h = +iso[4],
+        mi = +iso[5],
+        s = +(iso[6] || 0);
       var date = new Date(y, mo, d, h, mi, s);
       return isNaN(date.getTime()) ? null : date;
     }
@@ -206,9 +218,14 @@
         msg.textContent = t || "";
       }
 
-      var target = parseDateTimeLocal(targetStr);
-      if (!target) {
-        showMsg("⚠️ اختار تاريخ/وقت صحيح للعداد.");
+      if (!targetStr) {
+        showMsg("⚠️ التاريخ/الوقت مش واصل من الإعدادات.");
+        return;
+      }
+
+      var target = parseISO(targetStr) || new Date(targetStr);
+      if (isNaN(target.getTime())) {
+        showMsg("⚠️ صيغة التاريخ غير مدعومة: " + targetStr);
         return;
       }
 
