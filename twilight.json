@@ -1522,6 +1522,16 @@
                     "required": false
                 }
             ]
+        },
+        {
+            "key": "d7618bd4-d6f8-4191-b500-c87cf2aa2f7c",
+            "title": {
+                "en": "قسم متحرك",
+                "ar": "القسم و الصوره"
+            },
+            "icon": "sicon-store",
+            "path": "imagcatsli11",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
