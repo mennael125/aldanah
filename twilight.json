@@ -1466,7 +1466,77 @@
             },
             "icon": "sicon-store",
             "path": "counter1",
-            "fields": []
+            "fields": [
+                {
+                    "id": "imagecount",
+                    "type": "string",
+                    "format": "image",
+                    "label": "Image",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "e.g. https://hostname.com/image.png",
+                    "icon": "sicon-image",
+                    "value": null,
+                    "required": false
+                },
+                {
+                    "id": "subtextcount",
+                    "type": "string",
+                    "format": "text",
+                    "label": "subtext",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "Placeholder text ..",
+                    "icon": "sicon-format-text-alt",
+                    "value": null,
+                    "multilanguage": false,
+                    "required": false,
+                    "minLength": 6,
+                    "maxLength": 30
+                },
+                {
+                    "id": "maintextcount",
+                    "type": "string",
+                    "format": "text",
+                    "label": "maincount",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "Placeholder text ..",
+                    "icon": "sicon-format-text-alt",
+                    "value": null,
+                    "multilanguage": false,
+                    "required": false,
+                    "minLength": 6,
+                    "maxLength": 30
+                },
+                {
+                    "id": "counter",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "counter",
+                    "description": null,
+                    "labelHTML": null,
+                    "item_label": null,
+                    "icon": "sicon-list-add",
+                    "fields": [
+                        {
+                            "id": "counter.date_time",
+                            "type": "string",
+                            "format": "datetime",
+                            "inputType": "datetime-local",
+                            "label": "Date Time",
+                            "description": null,
+                            "labelHTML": null,
+                            "icon": "sicon-calendar-time",
+                            "value": "2021-10-01T15:23",
+                            "required": false
+                        }
+                    ],
+                    "value": [],
+                    "minLength": 1,
+                    "maxLength": 5
+                }
+            ]
         }
     ],
     "support_url": "https://example.com",
