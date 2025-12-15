@@ -1,33 +1,86 @@
+{# ========================= Feature Store Section path: featurestore1 fields:
+featbox (collection), boxcolor, text_color, containercolor
+========================= #} {% set data = component.featurestore1|default({})
+%} {% set items = data.featbox|default([]) %}
+
 <section
-  class="s-block s-block--features features-fullwidth"
-  style="background: {{ containercolor }};"
+  class="s-block s-block--features s-block--features--full"
+  style="background: {{ data.containercolor|default('#f6f7fb') }};"
 >
-  <div class="features-inner">
-    <div class="features-grid">
-      {% for item in featbox %}
-      <div class="feature-box" style="background: {{ boxcolor }};">
+  <div class="container">
+    <div
+      class="grid grid-cols-[repeat(2,minmax(0,1fr))] md:grid-cols-[repeat(3,minmax(0,1fr))] gap-4 sm:gap-6 xl:gap-8"
+    >
+      {% for item in items %}
+      <div
+        class="s-block--features__item"
+        style="background: {{ data.boxcolor|default('#ffffff') }}; color: {{ data.text_color|default('#111') }};"
+      >
         {% if item.image %}
         <div class="feature-icon">
           <img
-            src="{{ item.image.url }}"
-            alt="{{ item.maintext22 }}"
-            class="feature-icon__img"
+            src="{{ item.image }}"
+            alt="{{ item.maintext22|default('') }}"
             loading="lazy"
+            draggable="false"
           />
         </div>
-        {% endif %}
-
-        <h3 class="feature-title" style="color: {{ text_color }} !important;">
+        {% endif %} {% if item.maintext22 %}
+        <h2 style="color: {{ data.text_color|default('#111') }};">
           {{ item.maintext22 }}
-        </h3>
-
-        <p
-          class="feature-subtitle"
-          style="color: {{ text_color }} !important; opacity: 1 !important;"
-        >
+        </h2>
+        {% endif %} {% if item.subtext22 %}
+        <p style="color: {{ data.text_color|default('#111') }};">
           {{ item.subtext22 }}
         </p>
+        {% endif %}
       </div>
+      {% endfor %}
     </div>
   </div>
 </section>
+
+{% block featurestore_styles %}
+<style>
+  .s-block--features--full {
+    width: 100%;
+    padding: 28px 0;
+  }
+
+  .s-block--features__item {
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .s-block--features__item .feature-icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .s-block--features__item .feature-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .s-block--features__item h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+  }
+
+  .s-block--features__item p {
+    margin: 0;
+    opacity: 0.9;
+  }
+</style>
+{% endblock %}
