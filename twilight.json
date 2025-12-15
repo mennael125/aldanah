@@ -1321,8 +1321,8 @@
                     "icon": "sicon-link",
                     "value": null,
                     "required": false,
-                    "minLength": 6,
-                    "maxLength": 30
+                    "minLength": "3",
+                    "maxLength": "848"
                 },
                 {
                     "id": "vidimage",
