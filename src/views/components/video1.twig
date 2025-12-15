@@ -1,35 +1,26 @@
 <section class="s-block s-block--video mt-16 video-fullwidth">
   <div class="container video-fullwidth__container">
-    <div class="videoWrapper">
-      {% if component.urlvid %}
+    <div
+      class="videoWrapper"
+      data-video-url="{{ component.urlvid|default('')|trim }}"
+      data-poster-url="{{ component.vidimage|default('')|trim }}"
+    >
       <video
         class="bg-video"
         playsinline
         muted
         loop
         preload="metadata"
-        {%
-        if
-        component.vidimage
-        %}poster="{{ component.vidimage }}"
-        {%
-        endif
-        %}
-        controlsList="nodownload noplaybackrate"
-      >
-        <source src="{{ component.urlvid }}" type="video/mp4" />
-      </video>
+        poster="{{ component.vidimage|default('')|trim }}"
+        crossorigin="anonymous"
+        controlslist="nodownload noplaybackrate"
+      ></video>
 
       <button type="button" class="video-toggle" aria-label="تشغيل الفيديو">
         <span class="icon icon-play" aria-hidden="true"></span>
       </button>
 
       <div class="video-msg" hidden></div>
-      {% else %}
-      <div class="video-empty">
-        لم يتم إدخال رابط فيديو (MP4). يرجى إضافة الرابط من إعدادات المكوّن.
-      </div>
-      {% endif %}
     </div>
   </div>
 </section>
@@ -97,8 +88,8 @@
     height: 18px;
     position: relative;
   }
-  .icon-pause::before,
-  .icon-pause::after {
+  .icon-pause:before,
+  .icon-pause:after {
     content: "";
     position: absolute;
     top: 0;
@@ -107,14 +98,14 @@
     background: #fff;
     border-radius: 2px;
   }
-  .icon-pause::before {
+  .icon-pause:before {
     left: 0;
   }
-  .icon-pause::after {
+  .icon-pause:after {
     right: 0;
   }
   .videoWrapper.is-playing .video-toggle {
-    opacity: 0.9;
+    opacity: 0.15;
   }
   .video-msg {
     position: absolute;
@@ -128,45 +119,37 @@
     direction: rtl;
     text-align: right;
   }
-  .video-empty {
-    padding: 16px;
-    color: #fff;
-    direction: rtl;
-    text-align: right;
-    background: #000;
-    min-height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
 </style>
 {% endblock %} {% block scriptvideo %}
 <script>
   (function () {
     function initVideoBlock(wrapper) {
-      const video = wrapper.querySelector(".bg-video");
-      const btn = wrapper.querySelector(".video-toggle");
-      const msg = wrapper.querySelector(".video-msg");
+      var video = wrapper.querySelector(".bg-video");
+      var btn = wrapper.querySelector(".video-toggle");
+      var msg = wrapper.querySelector(".video-msg");
       if (!video || !btn) return;
 
-      function showMsg(t) {
+      var url = (wrapper.getAttribute("data-video-url") || "").trim();
+      var poster = (wrapper.getAttribute("data-poster-url") || "").trim();
+
+      function showMsg(text) {
         if (!msg) return;
-        msg.hidden = !t;
-        msg.textContent = t || "";
+        msg.hidden = !text;
+        msg.textContent = text || "";
       }
 
-      function toggleIcon(p) {
-        const i = btn.querySelector(".icon");
-        if (!i) return;
-        i.className = "icon " + (p ? "icon-pause" : "icon-play");
+      function toggleIcon(isPlaying) {
+        var icon = btn.querySelector(".icon");
+        if (!icon) return;
+        icon.className = "icon " + (isPlaying ? "icon-pause" : "icon-play");
       }
 
-      function setState(p) {
-        toggleIcon(p);
-        wrapper.classList.toggle("is-playing", p);
+      function setState(isPlaying) {
+        toggleIcon(isPlaying);
+        wrapper.classList.toggle("is-playing", isPlaying);
         btn.setAttribute(
           "aria-label",
-          p ? "إيقاف تشغيل الفيديو" : "تشغيل الفيديو"
+          isPlaying ? "إيقاف تشغيل الفيديو" : "تشغيل الفيديو"
         );
       }
 
@@ -174,31 +157,56 @@
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
       video.playsInline = true;
+      video.preload = "metadata";
+
+      if (poster) video.poster = poster;
+
+      if (!url) {
+        showMsg("⚠️ رابط الفيديو غير مُدخل في إعدادات القسم.");
+        btn.disabled = true;
+        btn.style.display = "none";
+        return;
+      }
+
+      video.src = url;
 
       setState(false);
       showMsg("");
 
-      async function tryPlay() {
+      function tryPlay() {
         showMsg("");
         try {
           if (video.readyState === 0) video.load();
           video.muted = true;
-          const r = video.play();
-          if (r && typeof r.then === "function") await r;
-          video.removeAttribute("poster");
-          setState(true);
+          var p = video.play();
+          if (p && typeof p.then === "function") {
+            p.then(function () {
+              if (video.poster) video.removeAttribute("poster");
+              setState(true);
+            }).catch(function (e) {
+              setState(false);
+              if (e && e.name === "NotAllowedError")
+                showMsg("التشغيل اتمنع تلقائيًا. اضغط زر التشغيل مرة أخرى.");
+              else
+                showMsg(
+                  "تعذّر تشغيل الفيديو. تحقّق من الرابط وأنه MP4 (H.264) ومتاح بدون صلاحيات."
+                );
+              console.log("Video play error:", e);
+            });
+          } else {
+            if (video.poster) video.removeAttribute("poster");
+            setState(true);
+          }
         } catch (e) {
           setState(false);
-          const err =
-            e && e.name
-              ? e.name + (e.message ? ": " + e.message : "")
-              : String(e);
-          showMsg("تعذّر تشغيل الفيديو: " + err);
-          console.log("Video play blocked/error:", e);
+          showMsg(
+            "تعذّر تشغيل الفيديو. تحقّق من الرابط وأنه MP4 (H.264) ومتاح بدون صلاحيات."
+          );
+          console.log("Video play error:", e);
         }
       }
 
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", function () {
         if (video.paused) tryPlay();
         else {
           video.pause();
@@ -206,31 +214,44 @@
         }
       });
 
-      video.addEventListener("play", () => {
-        video.removeAttribute("poster");
+      video.addEventListener("play", function () {
+        if (video.poster) video.removeAttribute("poster");
         setState(true);
         showMsg("");
       });
 
-      video.addEventListener("pause", () => setState(false));
-
-      video.addEventListener("error", () => {
-        const c = video.error ? video.error.code : "";
+      video.addEventListener("pause", function () {
         setState(false);
-        showMsg("حدث خطأ أثناء تحميل الفيديو. (رمز الخطأ: " + c + ")");
       });
 
-      video.addEventListener("stalled", () =>
-        showMsg("جاري محاولة استكمال التحميل…")
-      );
+      video.addEventListener("error", function () {
+        var err = video.error;
+        var code = err ? err.code : "";
+        var hint = "";
+        if (code === 2)
+          hint = " (مشكلة شبكة/403/404 أو السيرفر لا يدعم range requests)";
+        if (code === 3)
+          hint = " (Decode: غالبًا الفيديو H.265 أو ترميز غير مدعوم)";
+        if (code === 4)
+          hint = " (Not supported: صيغة/Codec غير مدعوم أو MIME type غلط)";
+        setState(false);
+        showMsg("حدث خطأ أثناء تحميل الفيديو. رمز: " + code + hint);
+      });
 
-      video.addEventListener("canplay", () => {
+      video.addEventListener("stalled", function () {
+        showMsg("جاري محاولة استكمال التحميل…");
+      });
+      video.addEventListener("waiting", function () {
+        showMsg("جاري التحميل…");
+      });
+      video.addEventListener("canplay", function () {
         if (!video.paused) showMsg("");
       });
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".videoWrapper").forEach(initVideoBlock);
+    document.addEventListener("DOMContentLoaded", function () {
+      var blocks = document.querySelectorAll(".videoWrapper");
+      for (var i = 0; i < blocks.length; i++) initVideoBlock(blocks[i]);
     });
   })();
 </script>
