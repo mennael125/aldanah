@@ -1457,6 +1457,16 @@
                     "required": false
                 }
             ]
+        },
+        {
+            "key": "8bd2c355-145d-4451-8aa7-b41560fa6311",
+            "title": {
+                "en": "counter",
+                "ar": "العداد"
+            },
+            "icon": "sicon-store",
+            "path": "counter1",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
