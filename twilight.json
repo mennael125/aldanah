@@ -1312,14 +1312,14 @@
                 {
                     "id": "urlvid",
                     "type": "string",
-                    "format": "text",
+                    "format": "url",
+                    "inputType": "url",
                     "label": "رابط الفيديو",
                     "description": null,
                     "labelHTML": null,
                     "placeholder": "e.g. https://salla.sa",
-                    "icon": "sicon-format-text-alt",
+                    "icon": "sicon-link",
                     "value": null,
-                    "multilanguage": false,
                     "required": false,
                     "minLength": 6,
                     "maxLength": 30
