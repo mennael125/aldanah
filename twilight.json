@@ -1322,7 +1322,7 @@
                     "value": null,
                     "required": true,
                     "minLength": 6,
-                    "maxLength": 30
+                    "maxLength": "99"
                 },
                 {
                     "id": "vidimage",
