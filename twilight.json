@@ -1510,7 +1510,7 @@
                     "maxLength": 30
                 },
                 {
-                    "id": "counter.date_time",
+                    "id": "counterdate",
                     "type": "string",
                     "format": "datetime",
                     "inputType": "datetime-local",
