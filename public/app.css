@@ -7928,6 +7928,23 @@ input[type=radio].sr-only:checked ~ div.s-loyalty-prize-item-check {
     color: rgba(209, 213, 219, 1);
     color: rgba(209, 213, 219, var(--tw-text-opacity, 1));
 }
+.s-loyalty-program-no-content .\!icon {
+    margin-bottom: 1rem;
+    display: flex;
+    height: 8rem;
+    width: 8rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgba(243, 244, 246, 1);
+    background-color: rgba(243, 244, 246, var(--tw-bg-opacity, 1));
+    font-size: 3rem;
+    line-height: 1;
+    --tw-text-opacity: 1;
+    color: rgba(209, 213, 219, 1);
+    color: rgba(209, 213, 219, var(--tw-text-opacity, 1));
+}
 .s-loyalty-program-no-content p {
     margin-bottom: 1rem;
     font-size: 1rem;
@@ -11054,6 +11071,23 @@ input[type=radio].s-order-totals-card-heading:checked ~ div.absolute {
     color: rgba(156, 163, 175, var(--tw-text-opacity, 1));
 }
 .s-orders-no-content .icon {
+    margin-bottom: 1rem;
+    display: flex;
+    height: 8rem;
+    width: 8rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgba(243, 244, 246, 1);
+    background-color: rgba(243, 244, 246, var(--tw-bg-opacity, 1));
+    font-size: 3rem;
+    line-height: 1;
+    --tw-text-opacity: 1;
+    color: rgba(209, 213, 219, 1);
+    color: rgba(209, 213, 219, var(--tw-text-opacity, 1));
+}
+.s-orders-no-content .\!icon {
     margin-bottom: 1rem;
     display: flex;
     height: 8rem;
@@ -18230,6 +18264,23 @@ input[type=radio].sr-only:checked ~ div.s-verify-back {
     color: rgba(156, 163, 175, var(--tw-text-opacity, 1));
 }
 .s-wallet-no-content .icon {
+    margin-bottom: 1rem;
+    display: flex;
+    height: 8rem;
+    width: 8rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgba(243, 244, 246, 1);
+    background-color: rgba(243, 244, 246, var(--tw-bg-opacity, 1));
+    font-size: 3rem;
+    line-height: 1;
+    --tw-text-opacity: 1;
+    color: rgba(209, 213, 219, 1);
+    color: rgba(209, 213, 219, var(--tw-text-opacity, 1));
+}
+.s-wallet-no-content .\!icon {
     margin-bottom: 1rem;
     display: flex;
     height: 8rem;

@@ -12,7 +12,6 @@
         loop
         preload="metadata"
         poster="{{ component.vidimage|default('')|trim }}"
-        crossorigin="anonymous"
         controlslist="nodownload noplaybackrate"
       ></video>
 
@@ -71,6 +70,7 @@
     cursor: pointer;
     z-index: 2;
     backdrop-filter: blur(2px);
+    touch-action: manipulation;
   }
   .video-toggle:hover {
     background: rgba(0, 0, 0, 0.55);
@@ -132,6 +132,9 @@
       var url = (wrapper.getAttribute("data-video-url") || "").trim();
       var poster = (wrapper.getAttribute("data-poster-url") || "").trim();
 
+      var isPlayPending = false;
+      var lastTap = 0;
+
       function showMsg(text) {
         if (!msg) return;
         msg.hidden = !text;
@@ -174,45 +177,73 @@
       showMsg("");
 
       function tryPlay() {
+        if (isPlayPending) return;
+        isPlayPending = true;
+        btn.disabled = true;
         showMsg("");
+
         try {
           if (video.readyState === 0) video.load();
           video.muted = true;
+
           var p = video.play();
           if (p && typeof p.then === "function") {
             p.then(function () {
               if (video.poster) video.removeAttribute("poster");
               setState(true);
-            }).catch(function (e) {
-              setState(false);
-              if (e && e.name === "NotAllowedError")
-                showMsg("التشغيل اتمنع تلقائيًا. اضغط زر التشغيل مرة أخرى.");
-              else
-                showMsg(
-                  "تعذّر تشغيل الفيديو. تحقّق من الرابط وأنه MP4 (H.264) ومتاح بدون صلاحيات."
-                );
-              console.log("Video play error:", e);
-            });
+              showMsg("");
+            })
+              .catch(function (e) {
+                setState(false);
+                if (e && e.name === "NotAllowedError") {
+                  showMsg("التشغيل اتمنع تلقائيًا. اضغط زر التشغيل مرة أخرى.");
+                } else {
+                  showMsg(
+                    "تعذّر تشغيل الفيديو. غالبًا رابط الاستضافة يمنع التحميل من خارج موقعه أو يرسل نوع ملف غير صحيح."
+                  );
+                }
+                console.log("Video play error:", e);
+              })
+              .finally(function () {
+                isPlayPending = false;
+                btn.disabled = false;
+              });
           } else {
             if (video.poster) video.removeAttribute("poster");
             setState(true);
+            isPlayPending = false;
+            btn.disabled = false;
           }
         } catch (e) {
           setState(false);
-          showMsg(
-            "تعذّر تشغيل الفيديو. تحقّق من الرابط وأنه MP4 (H.264) ومتاح بدون صلاحيات."
-          );
+          showMsg("تعذّر تشغيل الفيديو. غالبًا مشكلة استضافة/رابط.");
           console.log("Video play error:", e);
+          isPlayPending = false;
+          btn.disabled = false;
         }
       }
 
-      btn.addEventListener("click", function () {
-        if (video.paused) tryPlay();
-        else {
-          video.pause();
-          setState(false);
+      function safePause() {
+        if (isPlayPending) return;
+        video.pause();
+        setState(false);
+      }
+
+      function onToggle(ev) {
+        if (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
         }
-      });
+        var now = Date.now();
+        if (now - lastTap < 350) return;
+        lastTap = now;
+
+        if (video.paused) tryPlay();
+        else safePause();
+      }
+
+      btn.addEventListener("click", onToggle, { passive: false });
+      btn.addEventListener("touchend", onToggle, { passive: false });
 
       video.addEventListener("play", function () {
         if (video.poster) video.removeAttribute("poster");
@@ -221,31 +252,19 @@
       });
 
       video.addEventListener("pause", function () {
-        setState(false);
+        if (!isPlayPending) setState(false);
       });
 
       video.addEventListener("error", function () {
         var err = video.error;
         var code = err ? err.code : "";
         var hint = "";
-        if (code === 2)
-          hint = " (مشكلة شبكة/403/404 أو السيرفر لا يدعم range requests)";
-        if (code === 3)
-          hint = " (Decode: غالبًا الفيديو H.265 أو ترميز غير مدعوم)";
+        if (code === 2) hint = " (403/404 أو السيرفر لا يدعم range)";
+        if (code === 3) hint = " (ترميز غير مدعوم: جرّب H.264)";
         if (code === 4)
-          hint = " (Not supported: صيغة/Codec غير مدعوم أو MIME type غلط)";
+          hint = " (الاستضافة بترجع نوع ملف غلط/تمنع hotlink/CSP)";
         setState(false);
         showMsg("حدث خطأ أثناء تحميل الفيديو. رمز: " + code + hint);
-      });
-
-      video.addEventListener("stalled", function () {
-        showMsg("جاري محاولة استكمال التحميل…");
-      });
-      video.addEventListener("waiting", function () {
-        showMsg("جاري التحميل…");
-      });
-      video.addEventListener("canplay", function () {
-        if (!video.paused) showMsg("");
       });
     }
 
