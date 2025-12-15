@@ -1215,6 +1215,21 @@
             "path": "catogery1",
             "fields": [
                 {
+                    "id": "cato",
+                    "type": "string",
+                    "format": "text",
+                    "label": "اسم القسم",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "Placeholder text ..",
+                    "icon": "sicon-format-text-alt",
+                    "value": null,
+                    "multilanguage": false,
+                    "required": false,
+                    "minLength": 6,
+                    "maxLength": 30
+                },
+                {
                     "id": "collectiongrid",
                     "type": "collection",
                     "format": "collection",
