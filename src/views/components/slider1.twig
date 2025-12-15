@@ -61,7 +61,6 @@
     </div>
   </salla-slider>
 
-  <!-- Pagination مخصص (أكيــد هيظهر) -->
   <div
     class="home-slider__pagination"
     aria-label="Home slider pagination"
@@ -70,10 +69,9 @@
 
 {% block styleslider %}
 <style>
-  /* لازم عشان absolute بتاع pagination يشتغل صح */
   .home-slider {
     position: relative !important;
-    overflow: hidden !important; /* يمنع ظهور أجزاء خارج الإطار */
+    overflow: hidden !important;
   }
 
   .home-slide {
@@ -95,7 +93,6 @@
     pointer-events: none;
   }
 
-  /* === أهم سطرين لتخلي كل سلايد يملأ العرض === */
   .home-slider .swiper-slide {
     width: 100% !important;
   }
@@ -103,7 +100,6 @@
     overflow: hidden !important;
   }
 
-  /* RTL */
   .home-slider,
   .home-slider .swiper,
   .home-slider .swiper-wrapper {
@@ -142,7 +138,6 @@
     }
   }
 
-  /* إخفاء الأسهم (احتياط) */
   .home-slider .swiper-button-next,
   .home-slider .swiper-button-prev,
   .home-slider [class*="swiper-button-"],
@@ -158,7 +153,6 @@
     pointer-events: none !important;
   }
 
-  /* Pagination مخصص (خليه تحت ووسط/يمين براحتك) */
   .home-slider__pagination {
     position: absolute;
     left: 0;
@@ -166,7 +160,7 @@
     bottom: 18px;
     z-index: 999;
     display: flex;
-    justify-content: center; /* لو عايزه يمين: خليها flex-end */
+    justify-content: center;
     align-items: center;
     gap: 10px;
     pointer-events: auto;
@@ -204,7 +198,6 @@
     }
 
     function killParallaxAndWeirdMove(swiper) {
-      // وقف أي “تحريك مع الماوس/بارالاكس”
       try {
         swiper.params.parallax = false;
       } catch (e) {}
@@ -222,8 +215,6 @@
         swiper.params.freeMode = false;
         swiper.params.freeModeMomentum = false;
       } catch (e) {}
-
-      // امسح أي parallax attrs
       try {
         document
           .querySelectorAll(".home-slider [data-swiper-parallax]")
@@ -232,7 +223,6 @@
     }
 
     function forceFullSlide(swiper) {
-      // ده اللي بيخلي “الصورة كلها تتغير ع طول”
       try {
         swiper.params.slidesPerView = 1;
         swiper.params.slidesPerGroup = 1;
@@ -257,7 +247,6 @@
           b.setAttribute("role", "button");
           b.setAttribute("tabindex", "0");
           b.addEventListener("click", () => {
-            // لو loop شغال: استخدم slideToLoop
             if (typeof swiper.slideToLoop === "function") swiper.slideToLoop(i);
             else swiper.slideTo(i);
           });
@@ -290,7 +279,6 @@
       const swiper = getSwiperInstance(sallaEl);
       if (!swiper) return false;
 
-      // RTL
       try {
         if (typeof swiper.changeLanguageDirection === "function")
           swiper.changeLanguageDirection("rtl");
@@ -299,7 +287,6 @@
       forceFullSlide(swiper);
       killParallaxAndWeirdMove(swiper);
 
-      // Pagination مضمون
       buildCustomPagination(swiper, pagerEl);
 
       try {
