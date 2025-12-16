@@ -1532,6 +1532,16 @@
             "icon": "sicon-store",
             "path": "imagcatsli11",
             "fields": []
+        },
+        {
+            "key": "9773a4ec-d438-454a-b716-480d853ef9d9",
+            "title": {
+                "en": "reviews",
+                "ar": "اراء العملاء"
+            },
+            "icon": "sicon-store",
+            "path": "reviews1",
+            "fields": []
         }
     ],
     "support_url": "https://example.com",
