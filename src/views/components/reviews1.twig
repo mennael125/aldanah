@@ -1,20 +1,16 @@
-<section class="s-block s-block--testimonials s-block--reviews1" dir="rtl">
-  {# ===== Title field (id = title) ===== #} {% set blockTitle = (
-  section.settings.title ?? attribute(section.settings,'title') ??
-  section.settings.get('title') ?? section.settings['title'] ?? component.title
-  ?? attribute(component,'title') ?? component.get('title') ??
-  component['title'] ?? component['reviews.title'] ??
-  attribute(component,'reviews.title') ?? '' )|default('')|trim %} {# =====
-  Collection field (id = review) ===== #} {% set reviewsRaw = (
-  section.settings.review ?? attribute(section.settings,'review') ??
-  section.settings.get('review') ?? section.settings['review'] ??
-  component.review ?? attribute(component,'review') ?? component.get('review')
-  ?? component['review'] ?? component['reviews.review'] ??
-  attribute(component,'reviews.review') ?? [] ) %} {# لو collection جاية داخل
-  value #} {% set reviews = reviewsRaw.value is defined ? reviewsRaw.value :
-  reviewsRaw %}
+<section class="s-block s-block--reviews1" dir="rtl">
+  {% set blockTitle = ( section.settings.title ??
+  attribute(section.settings,'title') ?? section.settings.get('title') ??
+  section.settings['title'] ?? component.title ?? attribute(component,'title')
+  ?? component.get('title') ?? component['title'] ?? '' )|default('')|trim %} {%
+  set reviewsRaw = ( section.settings.review ??
+  attribute(section.settings,'review') ?? section.settings.get('review') ??
+  section.settings['review'] ?? component.review ??
+  attribute(component,'review') ?? component.get('review') ??
+  component['review'] ?? [] ) %} {% set reviews = reviewsRaw.value is defined ?
+  reviewsRaw.value : reviewsRaw %}
 
-  <div class="s-reviews-container container overflow-hidden">
+  <div class="container overflow-hidden">
     <div class="s-reviews-header-wrapper">
       <h1 class="s-reviews-header">
         {{ blockTitle ? blockTitle : "آراء العملاء" }}
@@ -28,41 +24,35 @@
       controls-outer
       auto-play
       centered
+      loop
       slides-per-view="3"
       mobile-slides-per-view="1"
     >
       <div slot="items">
-        {% for index, item in reviews %} {# ===== Per item fields ===== #} {%
-        set name = ( item['review.client'] ?? attribute(item,'review.client') ??
-        item.client ?? attribute(item,'client') ?? 'أسم العميل'
-        )|default('')|trim %} {% set text = ( item['review.reviewtext'] ??
+        {% for index, item in reviews %} {% set name = ( item['review.client']
+        ?? attribute(item,'review.client') ?? item.client ??
+        attribute(item,'client') ?? 'أسم العميل' )|default('')|trim %} {% set
+        text = ( item['review.reviewtext'] ??
         attribute(item,'review.reviewtext') ?? item.reviewtext ??
         attribute(item,'reviewtext') ?? item.text ?? attribute(item,'text') ??
         '' )|default('')|trim %} {% set rawStars = ( item['review.stars'] ??
         attribute(item,'review.stars') ?? item.stars ?? attribute(item,'stars')
-        ?? 0 )|default(0) %} {# نقفل النجوم من 0 لـ 5 #} {% set stars = rawStars
-        > 5 ? 5 : (rawStars < 0 ? 0 : rawStars) %}
+        ?? 0 )|default(0) %} {% set stars = rawStars > 5 ? 5 : (rawStars < 0 ? 0
+        : rawStars) %}
 
         <div class="swiper-slide">
-          <div class="r1-card">
-            <span class="r1-card__quote" aria-hidden="true">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M10 8H6a4 4 0 0 0-4 4v4h8V8Zm12 0h-4a4 4 0 0 0-4 4v4h8V8Z"
-                  fill="#fff"
-                />
-              </svg>
+          <article class="r1-card">
+            <span class="r1-quote" aria-hidden="true">
+              <img
+                src="{{ 'icons/vector.svg' | asset }}"
+                alt=""
+                loading="lazy"
+              />
             </span>
 
-            <h3 class="r1-card__name">{{ name }}</h3>
+            <h3 class="r1-name">{{ name }}</h3>
 
-            <div class="r1-card__stars">
+            <div class="r1-stars">
               <salla-rating-stars
                 class="flex"
                 size="small"
@@ -70,14 +60,12 @@
               ></salla-rating-stars>
             </div>
 
-            <p class="r1-card__text">{{ text }}</p>
-          </div>
+            <p class="r1-text">{{ text }}</p>
+          </article>
         </div>
-
         {% endfor %}
       </div>
     </salla-slider>
-
     {% else %}
     <div class="r1-empty">
       لا يوجد بيانات لعرضها — تأكد من إضافة عناصر داخل (review).
@@ -94,78 +82,115 @@
 
   .s-block--reviews1 .s-reviews-header {
     text-align: center;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 800;
-    margin: 0 0 35px;
+    margin: 0 0 30px;
     color: #111;
     font-family: Cairo, sans-serif;
   }
 
   .s-block--reviews1 .reviews1-slider {
-    padding: 8px 6px 24px;
+    padding: 10px 0 26px;
+    overflow: visible !important;
   }
+
+  .s-block--reviews1 .reviews1-slider .swiper,
+  .s-block--reviews1 .reviews1-slider .swiper-wrapper {
+    overflow: visible !important;
+  }
+
   .s-block--reviews1 .reviews1-slider .swiper-slide {
     height: auto;
+    display: flex;
+    align-items: stretch;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
 
   .s-block--reviews1 .r1-card {
     position: relative;
+    width: 100%;
     background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 10px;
-    padding: 22px 22px 20px;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
-    min-height: 170px;
-    text-align: right;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
+    padding: 18px 16px 16px;
+    padding-top: 22px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+      background 0.25s ease;
   }
 
-  .s-block--reviews1 .r1-card__quote {
+  .s-block--reviews1 .r1-quote {
     position: absolute;
-    top: 12px;
-    inset-inline-end: 12px;
-    width: 44px;
-    height: 44px;
-    background: #111;
-    border-radius: 6px;
+    top: -10px;
+    inset-inline-start: -10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
   }
 
-  .s-block--reviews1 .r1-card__name {
-    margin: 0 0 8px;
+  .s-block--reviews1 .r1-name {
+    margin: 0 0 6px;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
     color: #111;
     font-family: Cairo, sans-serif;
   }
 
-  .s-block--reviews1 .r1-card__stars {
+  .s-block--reviews1 .r1-stars {
     margin-bottom: 10px;
     direction: ltr;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
-  .s-block--reviews1 .r1-card__text {
+  .s-block--reviews1 .r1-text {
     margin: 0;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.9;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #444;
     font-family: Cairo, sans-serif;
+  }
+
+  .s-block--reviews1 .swiper-slide-active .r1-card {
+    background: #f6f6f6;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    transform: scale(1.02);
+  }
+
+  .s-block--reviews1 .swiper-slide-active .r1-text {
+    color: #111;
   }
 
   .s-block--reviews1 .r1-empty {
     text-align: center;
-    padding: 20px;
+    padding: 18px;
     opacity: 0.75;
     font-family: Cairo, sans-serif;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     .s-block--reviews1 .s-reviews-header {
-      font-size: 28px;
+      font-size: 26px;
     }
+    .s-block--reviews1 .reviews1-slider .swiper-slide {
+      padding: 0 8px;
+    }
+    .s-block--reviews1 .r1-quote {
+      top: -8px;
+      inset-inline-end: -8px;
+    }
+  }
+  .r1-quote img {
+    width: 18px;
+    height: 18px;
+    display: block;
   }
 </style>
 {% endblock %}
