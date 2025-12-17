@@ -1,12 +1,14 @@
 <section class="s-block s-block--counter" dir="rtl">
-  {% set target = ( section.settings.counterdate ?? attribute(section.settings,
-  'counterdate') ?? section.settings.get('counterdate') ??
-  section.settings['counterdate'] ?? component.counterdate ??
-  attribute(component, 'counterdate') ?? component.get('counterdate') ??
-  component['counterdate'] ?? component['counter.date_time'] ??
-  attribute(component, 'counter.date_time') ?? '' )|default('')|trim %}
+  {% set target = section.settings.counterdate ? section.settings.counterdate :
+  (component.counterdate ? component.counterdate : '') %} {% set mainText =
+  section.settings.maintextcount ? section.settings.maintextcount :
+  (component.maintextcount ? component.maintextcount : '') %} {% set subText =
+  section.settings.subtextcount ? section.settings.subtextcount :
+  (component.subtextcount ? component.subtextcount : '') %} {% set imgSrc =
+  section.settings.imagecount ? section.settings.imagecount :
+  (component.imagecount ? component.imagecount : '') %}
 
-  <div class="counter-wrap" data-countdown="{{ target }}">
+  <div class="counter-wrap" data-countdown="{{ target | trim }}">
     <div class="counter-left">
       <div class="counter-cells">
         <div class="cell">
@@ -27,14 +29,7 @@
         </div>
       </div>
 
-      {% set mainText = section.settings.maintextcount ??
-      attribute(section.settings,'maintextcount') ??
-      section.settings.get('maintextcount') ?? component.maintextcount ??
-      attribute(component,'maintextcount') ?? '' %} {% set subText =
-      section.settings.subtextcount ??
-      attribute(section.settings,'subtextcount') ??
-      section.settings.get('subtextcount') ?? component.subtextcount ??
-      attribute(component,'subtextcount') ?? '' %} {% if mainText %}
+      {% if mainText %}
       <h3 class="counter-title">{{ mainText }}</h3>
       {% endif %} {% if subText %}
       <p class="counter-sub">{{ subText }}</p>
@@ -42,11 +37,6 @@
 
       <div class="counter-msg" hidden></div>
     </div>
-
-    {% set imgSrc = section.settings.imagecount ??
-    attribute(section.settings,'imagecount') ??
-    section.settings.get('imagecount') ?? component.imagecount ??
-    attribute(component,'imagecount') ?? '' %}
 
     <div class="counter-right">
       {% if imgSrc %}
@@ -186,23 +176,6 @@
       return String(n).padStart(2, "0");
     }
 
-    function parseISO(dt) {
-      if (!dt) return null;
-      dt = String(dt).trim();
-      var iso = dt.match(
-        /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/
-      );
-      if (!iso) return null;
-      var y = +iso[1],
-        mo = +iso[2] - 1,
-        d = +iso[3],
-        h = +iso[4],
-        mi = +iso[5],
-        s = +(iso[6] || 0);
-      var date = new Date(y, mo, d, h, mi, s);
-      return isNaN(date.getTime()) ? null : date;
-    }
-
     function initCountdown(wrap) {
       var targetStr = (wrap.getAttribute("data-countdown") || "").trim();
 
@@ -219,13 +192,14 @@
       }
 
       if (!targetStr) {
-        showMsg("⚠️ التاريخ/الوقت مش واصل من الإعدادات.");
+        showMsg("تنبيه: تاريخ ووقت العدّ التنازلي غير متوفر في الإعدادات.");
         return;
       }
 
-      var target = parseISO(targetStr) || new Date(targetStr);
+      var target = new Date(targetStr);
       if (isNaN(target.getTime())) {
-        showMsg("⚠️ صيغة التاريخ غير مدعومة: " + targetStr);
+        showMsg("تنبيه: صيغة التاريخ/الوقت المُدخلة غير معتمدة: " + targetStr);
+
         return;
       }
 

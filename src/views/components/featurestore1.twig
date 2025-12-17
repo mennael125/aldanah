@@ -2,7 +2,7 @@
   class="s-block s-block--features"
   style="background: {{ component.containercolor|default('#004956') }};"
 >
-  <h3 class="feature-heading">
+  <h3 class="feature-heading text-center">
     {{ component.titlefeature22 }}
   </h3>
 
@@ -15,7 +15,7 @@
       style="background: {{ component.boxcolor|default('#ffffff') }};"
     >
       <div class="feature-image mb-[28px]">
-        <img src="{{ item.image }}" alt="" />
+        <img src="{{ item.image }}" alt="" loading="lazy" />
       </div>
 
       <h2
@@ -25,10 +25,7 @@
         {{ item.maintext22 }}
       </h2>
 
-      <p
-        class="feature-subtitle"
-        style="color: {{ component.text_color|default('#004956') }};"
-      >
+      <p class="feature-subtitle">
         {{ item.subtext22 }}
       </p>
     </div>
@@ -43,15 +40,12 @@
     text-align: center;
   }
 
-  @media (max-width: 767px) {
-    .s-block--features {
-      padding: 36px 16px;
-    }
-
-    .s-block--features__item {
-      grid-column: span 2 / span 2;
-      margin-top: 31px;
-    }
+  .feature-heading {
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1;
+    text-align: center;
+    margin: 0 0 46px 0;
   }
 
   .s-block--features__grid {
@@ -67,15 +61,19 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 44px 24px;
+    gap: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
   }
 
   .feature-image {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
   }
 
   .feature-image img {
-    width: 80px !important;
-    height: 80px !important;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     display: block;
   }
@@ -91,59 +89,62 @@
   .feature-title {
     font-weight: 500;
     font-size: 24px;
-    line-height: 100%;
-    letter-spacing: 0;
+    line-height: 1;
     margin: 0 0 16px 0;
     text-align: center;
-    vertical-align: middle;
   }
 
   .feature-subtitle {
     font-weight: 500;
     font-size: 16px;
-    line-height: 100%;
-    letter-spacing: 0;
+    line-height: 1;
     margin: 0;
+    text-align: center;
+  }
+
+  .s-block--features__item h2 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: right;
+  }
+
+  .s-block--features__item p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 0;
     text-align: center;
     vertical-align: middle;
   }
 
-  .feature-heading {
-    font-weight: 600;
-    font-style: SemiBold;
-    font-size: 36px;
-    leading-trim: NONE;
-    line-height: 100%;
-    letter-spacing: 0%;
-    text-align: right;
-    margin-bottom: 46px;
-  }
-
-  @media (max-width: 992px) {
-    .s-block--features__item {
-      width: 418;
-      height: 259;
-      angle: 0 deg;
-      opacity: 1;
-      padding-top: 44px;
-      padding-right: 108px;
-      padding-bottom: 44px;
-      padding-left: 108px;
-      gap: 28px;
-      border-width: 1px;
-    }
-  }
-
   @media (max-width: 992px) {
     .feature-heading {
-      font-weight: 600;
-      font-style: SemiBold;
       font-size: 24px;
-      leading-trim: NONE;
-      line-height: 100%;
-      letter-spacing: 0%;
-      text-align: right;
     }
+  }
+
+  @media (max-width: 992px) {
+    .s-block--features {
+      padding: 36px 16px;
+    }
+    .s-block--features__item {
+      grid-column: span 2 / span 2;
+    }
+    .s-block--features__item h2 {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .s-block--features__grid {
+      max-width: 1298px;
+      margin: auto;
+    }
+  }
+  .s-block--features__item h2 {
+    text-align: center;
   }
 </style>
 {% endblock %}
