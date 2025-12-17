@@ -1,102 +1,27 @@
-{# reviews1.twig #}
+<section class="s-block s-block--testimonials s-block--reviews1" dir="rtl">
+  {# ===== Title field (id = title) ===== #} {% set blockTitle = (
+  section.settings.title ?? attribute(section.settings,'title') ??
+  section.settings.get('title') ?? section.settings['title'] ?? component.title
+  ?? attribute(component,'title') ?? component.get('title') ??
+  component['title'] ?? component['reviews.title'] ??
+  attribute(component,'reviews.title') ?? '' )|default('')|trim %} {# =====
+  Collection field (id = review) ===== #} {% set reviewsRaw = (
+  section.settings.review ?? attribute(section.settings,'review') ??
+  section.settings.get('review') ?? section.settings['review'] ??
+  component.review ?? attribute(component,'review') ?? component.get('review')
+  ?? component['review'] ?? component['reviews.review'] ??
+  attribute(component,'reviews.review') ?? [] ) %} {# لو collection جاية داخل
+  value #} {% set reviews = reviewsRaw.value is defined ? reviewsRaw.value :
+  reviewsRaw %}
 
-<style>
-  /* ========== Reviews1 Block - inline styles ========== */
-  .s-block--reviews1-custom .s-reviews-header {
-    text-align: center;
-    font-size: 40px;
-    font-weight: 800;
-    margin: 0 0 35px;
-    color: #111;
-  }
-
-  /* سلايدر */
-  .s-block--reviews1-custom .reviews1-slider .swiper-slide {
-    height: auto;
-  }
-
-  /* الكارت */
-  .s-block--reviews1-custom .r1-card {
-    position: relative;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 10px;
-    padding: 22px 22px 20px;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
-    min-height: 170px;
-    text-align: right;
-  }
-
-  /* مربع الاقتباس (أو الايقونة) */
-  .s-block--reviews1-custom .r1-card__quote {
-    position: absolute;
-    top: 12px;
-    inset-inline-end: 12px;
-    width: 44px;
-    height: 44px;
-    background: #111;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-  }
-  .s-block--reviews1-custom .r1-card__quote i {
-    font-size: 18px;
-    line-height: 1;
-  }
-
-  /* اسم القسم (اختياري) */
-  .s-block--reviews1-custom .r1-card__cat {
-    margin: 0 0 6px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
-    font-weight: 700;
-  }
-
-  /* اسم العميل */
-  .s-block--reviews1-custom .r1-card__name {
-    margin: 0 0 8px;
-    font-size: 14px;
-    font-weight: 800;
-    color: #111;
-  }
-
-  /* النجوم */
-  .s-block--reviews1-custom .r1-card__stars {
-    margin-bottom: 10px;
-    direction: ltr;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  /* النص */
-  .s-block--reviews1-custom .r1-card__text {
-    margin: 0;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.9;
-  }
-
-  /* مسافات */
-  .s-block--reviews1-custom .reviews1-slider {
-    padding: 8px 6px 24px;
-  }
-</style>
-
-<section
-  class="s-block s-block--testimonials s-block--reviews1-custom container overflow-hidden"
-  dir="rtl"
->
-  <div class="s-reviews-container">
+  <div class="s-reviews-container container overflow-hidden">
     <div class="s-reviews-header-wrapper">
       <h1 class="s-reviews-header">
-        {{ component.title.ar ?? "اراء العملاء" }}
+        {{ blockTitle ? blockTitle : "آراء العملاء" }}
       </h1>
     </div>
 
-    {# collection id = review #} {% set reviews = component.review ?? [] %}
-
+    {% if reviews and reviews|length %}
     <salla-slider
       id="reviews1-{{ position }}-slider"
       class="s-slider-wrapper reviews1-slider"
@@ -107,18 +32,20 @@
       mobile-slides-per-view="1"
     >
       <div slot="items">
-        {% for index, item in reviews %} {% set cat = item['review.asm_alqsm']
-        ?? '' %} {% set name = item['review.client'] ?? 'أسم العميل' %} {% set
-        text = item['review.reviewtext'] ?? '' %} {% set stars =
-        item['review.stars'] ?? 5 %} {% set icon = item['review.icon_picker'] ??
-        '' %}
+        {% for index, item in reviews %} {# ===== Per item fields ===== #} {%
+        set name = ( item['review.client'] ?? attribute(item,'review.client') ??
+        item.client ?? attribute(item,'client') ?? 'أسم العميل'
+        )|default('')|trim %} {% set text = ( item['review.reviewtext'] ??
+        attribute(item,'review.reviewtext') ?? item.reviewtext ??
+        attribute(item,'reviewtext') ?? item.text ?? attribute(item,'text') ??
+        '' )|default('')|trim %} {% set rawStars = ( item['review.stars'] ??
+        attribute(item,'review.stars') ?? item.stars ?? attribute(item,'stars')
+        ?? 0 )|default(0) %} {# نقفل النجوم من 0 لـ 5 #} {% set stars = rawStars
+        > 5 ? 5 : (rawStars < 0 ? 0 : rawStars) %}
 
         <div class="swiper-slide">
-          <article class="r1-card">
+          <div class="r1-card">
             <span class="r1-card__quote" aria-hidden="true">
-              {# لو icon_picker متوفر نعرضه، غير كده SVG اقتباس #} {% if icon %}
-              <i class="{{ icon }}"></i>
-              {% else %}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -131,12 +58,7 @@
                   fill="#fff"
                 />
               </svg>
-              {% endif %}
             </span>
-
-            {% if cat %}
-            <p class="r1-card__cat">{{ cat }}</p>
-            {% endif %}
 
             <h3 class="r1-card__name">{{ name }}</h3>
 
@@ -149,10 +71,101 @@
             </div>
 
             <p class="r1-card__text">{{ text }}</p>
-          </article>
+          </div>
         </div>
+
         {% endfor %}
       </div>
     </salla-slider>
+
+    {% else %}
+    <div class="r1-empty">
+      لا يوجد بيانات لعرضها — تأكد من إضافة عناصر داخل (review).
+    </div>
+    {% endif %}
   </div>
 </section>
+
+{% block stylereviews1 %}
+<style>
+  .s-block--reviews1 {
+    padding: 40px 0;
+  }
+
+  .s-block--reviews1 .s-reviews-header {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0 0 35px;
+    color: #111;
+    font-family: Cairo, sans-serif;
+  }
+
+  .s-block--reviews1 .reviews1-slider {
+    padding: 8px 6px 24px;
+  }
+  .s-block--reviews1 .reviews1-slider .swiper-slide {
+    height: auto;
+  }
+
+  .s-block--reviews1 .r1-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 22px 22px 20px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+    min-height: 170px;
+    text-align: right;
+  }
+
+  .s-block--reviews1 .r1-card__quote {
+    position: absolute;
+    top: 12px;
+    inset-inline-end: 12px;
+    width: 44px;
+    height: 44px;
+    background: #111;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .s-block--reviews1 .r1-card__name {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #111;
+    font-family: Cairo, sans-serif;
+  }
+
+  .s-block--reviews1 .r1-card__stars {
+    margin-bottom: 10px;
+    direction: ltr;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .s-block--reviews1 .r1-card__text {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.9;
+    font-family: Cairo, sans-serif;
+  }
+
+  .s-block--reviews1 .r1-empty {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.75;
+    font-family: Cairo, sans-serif;
+  }
+
+  @media (max-width: 767px) {
+    .s-block--reviews1 .s-reviews-header {
+      font-size: 28px;
+    }
+  }
+</style>
+{% endblock %}
