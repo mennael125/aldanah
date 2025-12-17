@@ -1,0 +1,158 @@
+{# reviews1.twig #}
+
+<style>
+  /* ========== Reviews1 Block - inline styles ========== */
+  .s-block--reviews1-custom .s-reviews-header {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0 0 35px;
+    color: #111;
+  }
+
+  /* سلايدر */
+  .s-block--reviews1-custom .reviews1-slider .swiper-slide {
+    height: auto;
+  }
+
+  /* الكارت */
+  .s-block--reviews1-custom .r1-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 22px 22px 20px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+    min-height: 170px;
+    text-align: right;
+  }
+
+  /* مربع الاقتباس (أو الايقونة) */
+  .s-block--reviews1-custom .r1-card__quote {
+    position: absolute;
+    top: 12px;
+    inset-inline-end: 12px;
+    width: 44px;
+    height: 44px;
+    background: #111;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .s-block--reviews1-custom .r1-card__quote i {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* اسم القسم (اختياري) */
+  .s-block--reviews1-custom .r1-card__cat {
+    margin: 0 0 6px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 700;
+  }
+
+  /* اسم العميل */
+  .s-block--reviews1-custom .r1-card__name {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #111;
+  }
+
+  /* النجوم */
+  .s-block--reviews1-custom .r1-card__stars {
+    margin-bottom: 10px;
+    direction: ltr;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* النص */
+  .s-block--reviews1-custom .r1-card__text {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  /* مسافات */
+  .s-block--reviews1-custom .reviews1-slider {
+    padding: 8px 6px 24px;
+  }
+</style>
+
+<section
+  class="s-block s-block--testimonials s-block--reviews1-custom container overflow-hidden"
+  dir="rtl"
+>
+  <div class="s-reviews-container">
+    <div class="s-reviews-header-wrapper">
+      <h1 class="s-reviews-header">
+        {{ component.title.ar ?? "اراء العملاء" }}
+      </h1>
+    </div>
+
+    {# collection id = review #} {% set reviews = component.review ?? [] %}
+
+    <salla-slider
+      id="reviews1-{{ position }}-slider"
+      class="s-slider-wrapper reviews1-slider"
+      controls-outer
+      auto-play
+      centered
+      slides-per-view="3"
+      mobile-slides-per-view="1"
+    >
+      <div slot="items">
+        {% for index, item in reviews %} {% set cat = item['review.asm_alqsm']
+        ?? '' %} {% set name = item['review.client'] ?? 'أسم العميل' %} {% set
+        text = item['review.reviewtext'] ?? '' %} {% set stars =
+        item['review.stars'] ?? 5 %} {% set icon = item['review.icon_picker'] ??
+        '' %}
+
+        <div class="swiper-slide">
+          <article class="r1-card">
+            <span class="r1-card__quote" aria-hidden="true">
+              {# لو icon_picker متوفر نعرضه، غير كده SVG اقتباس #} {% if icon %}
+              <i class="{{ icon }}"></i>
+              {% else %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M10 8H6a4 4 0 0 0-4 4v4h8V8Zm12 0h-4a4 4 0 0 0-4 4v4h8V8Z"
+                  fill="#fff"
+                />
+              </svg>
+              {% endif %}
+            </span>
+
+            {% if cat %}
+            <p class="r1-card__cat">{{ cat }}</p>
+            {% endif %}
+
+            <h3 class="r1-card__name">{{ name }}</h3>
+
+            <div class="r1-card__stars">
+              <salla-rating-stars
+                class="flex"
+                size="small"
+                value="{{ stars }}"
+              ></salla-rating-stars>
+            </div>
+
+            <p class="r1-card__text">{{ text }}</p>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </salla-slider>
+  </div>
+</section>
