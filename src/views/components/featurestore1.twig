@@ -1,18 +1,20 @@
 <section
   class="s-block s-block--features"
   style="background: {{ component.containercolor|default('#004956') }};"
-    <h3 class="feature-heading">{{ component.titlefeature22 }}</h3>
-
 >
+  <h3 class="feature-heading">
+    {{ component.titlefeature22 }}
+  </h3>
+
   <div
-    class="s-block--features__grid grid grid-cols-1 md:grid-cols-3 gap-[22px]"
+    class="s-block--features__grid grid grid-cols-1 md:grid-cols-3 gap-[22px] justify-items-center"
   >
     {% for item in component.featbox %}
     <div
-      class="s-block--features__item"
+      class="s-block--features__item flex flex-col items-center text-center"
       style="background: {{ component.boxcolor|default('#ffffff') }};"
     >
-      <div class="feature-image">
+      <div class="feature-image mb-[28px]">
         <img src="{{ item.image }}" alt="" />
       </div>
 
@@ -40,6 +42,7 @@
     padding: 60px 71px;
     text-align: center;
   }
+
   @media (max-width: 767px) {
     .s-block--features {
       padding: 36px 16px;
@@ -69,6 +72,7 @@
   .feature-image {
     margin-bottom: 28px;
   }
+
   .feature-image img {
     width: 80px !important;
     height: 80px !important;
@@ -102,6 +106,44 @@
     margin: 0;
     text-align: center;
     vertical-align: middle;
+  }
+
+  .feature-heading {
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 36px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: right;
+    margin-bottom: 46px;
+  }
+
+  @media (max-width: 992px) {
+    .s-block--features__item {
+      width: 418;
+      height: 259;
+      angle: 0 deg;
+      opacity: 1;
+      padding-top: 44px;
+      padding-right: 108px;
+      padding-bottom: 44px;
+      padding-left: 108px;
+      gap: 28px;
+      border-width: 1px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .feature-heading {
+      font-weight: 600;
+      font-style: SemiBold;
+      font-size: 24px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      text-align: right;
+    }
   }
 </style>
 {% endblock %}
