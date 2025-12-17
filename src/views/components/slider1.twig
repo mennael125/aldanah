@@ -101,13 +101,11 @@
 
   .home-slide__text {
     max-width: 420px;
-    text-align: right;
-    direction: rtl;
-  }
-
-  .home-slide__btn {
-    margin-right: auto;
-    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   .home-slider #home-main-slider .swiper-pagination {
@@ -144,7 +142,6 @@
       padding-right: 16px;
       padding-left: 16px;
     }
-
     .home-slide__text {
       max-width: 100%;
     }
@@ -162,10 +159,43 @@
     }
   }
 
-  /* إخفاء الأسهم */
   .home-slider .swiper-button-next,
   .home-slider .swiper-button-prev {
     display: none !important;
+  }
+
+  p.home-slide__sub,
+  p.home-slide__body {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: right;
+    vertical-align: middle;
+  }
+
+  h3.home-slide__title {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .home-slide__btn {
+    width: 203px;
+    height: 48px;
+    justify-content: center;
+    opacity: 1;
+    padding: 6px 60px;
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+    vertical-align: middle;
   }
 </style>
 {% endblock %} {% block scriptslider %}{% endblock %}

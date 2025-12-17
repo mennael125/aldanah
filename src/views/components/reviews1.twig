@@ -1,14 +1,12 @@
 <section class="s-block s-block--reviews1" dir="rtl">
-  {% set blockTitle = ( section.settings.title ??
-  attribute(section.settings,'title') ?? section.settings.get('title') ??
-  section.settings['title'] ?? component.title ?? attribute(component,'title')
-  ?? component.get('title') ?? component['title'] ?? '' )|default('')|trim %} {%
-  set reviewsRaw = ( section.settings.review ??
-  attribute(section.settings,'review') ?? section.settings.get('review') ??
-  section.settings['review'] ?? component.review ??
-  attribute(component,'review') ?? component.get('review') ??
-  component['review'] ?? [] ) %} {% set reviews = reviewsRaw.value is defined ?
-  reviewsRaw.value : reviewsRaw %}
+  {% set blockTitle = section.settings.title ?? attribute(section.settings,
+  'title') ?? section.settings.get('title') ?? component.title ??
+  attribute(component, 'title') ?? component.get('title') ?? '' %} {% set
+  blockTitle = blockTitle|default('')|trim %} {% set reviewsRaw =
+  section.settings.review ?? attribute(section.settings, 'review') ??
+  section.settings.get('review') ?? component.review ?? attribute(component,
+  'review') ?? component.get('review') ?? [] %} {% set reviews =
+  reviewsRaw.value is defined ? reviewsRaw.value : reviewsRaw %}
 
   <div class="container overflow-hidden">
     <div class="s-reviews-header-wrapper">
@@ -18,6 +16,7 @@
     </div>
 
     {% if reviews and reviews|length %}
+
     <salla-slider
       id="reviews1-{{ position }}-slider"
       class="s-slider-wrapper reviews1-slider"
@@ -29,16 +28,17 @@
       mobile-slides-per-view="1"
     >
       <div slot="items">
-        {% for index, item in reviews %} {% set name = ( item['review.client']
-        ?? attribute(item,'review.client') ?? item.client ??
-        attribute(item,'client') ?? 'أسم العميل' )|default('')|trim %} {% set
-        text = ( item['review.reviewtext'] ??
-        attribute(item,'review.reviewtext') ?? item.reviewtext ??
-        attribute(item,'reviewtext') ?? item.text ?? attribute(item,'text') ??
-        '' )|default('')|trim %} {% set rawStars = ( item['review.stars'] ??
-        attribute(item,'review.stars') ?? item.stars ?? attribute(item,'stars')
-        ?? 0 )|default(0) %} {% set stars = rawStars > 5 ? 5 : (rawStars < 0 ? 0
-        : rawStars) %}
+        {% for item in reviews %} {% set name = item['review.client'] ??
+        attribute(item, 'review.client') ?? item.client ?? attribute(item,
+        'client') ?? 'أسم العميل' %} {% set name = name|default('')|trim %} {%
+        set text = item['review.reviewtext'] ?? attribute(item,
+        'review.reviewtext') ?? item.reviewtext ?? attribute(item, 'reviewtext')
+        ?? item.text ?? attribute(item, 'text') ?? '' %} {% set text =
+        text|default('')|trim %} {% set rawStars = item['review.stars'] ??
+        attribute(item, 'review.stars') ?? item.stars ?? attribute(item,
+        'stars') ?? 0 %} {% set rawStars = rawStars|default(0) %} {% set stars =
+        rawStars %} {% if stars > 5 %}{% set stars = 5 %}{% endif %} {% if stars
+        < 0 %}{% set stars = 0 %}{% endif %}
 
         <div class="swiper-slide">
           <article class="r1-card">
@@ -59,13 +59,17 @@
             <p class="r1-text">{{ text }}</p>
           </article>
         </div>
+
         {% endfor %}
       </div>
     </salla-slider>
+
     {% else %}
+
     <div class="r1-empty">
       لا يوجد بيانات لعرضها — تأكد من إضافة عناصر داخل (review).
     </div>
+
     {% endif %}
   </div>
 </section>
@@ -131,6 +135,12 @@
     z-index: 2;
   }
 
+  .s-block--reviews1 .r1-quote img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
   .s-block--reviews1 .r1-name {
     margin: 0 0 6px;
     font-size: 14px;
@@ -182,11 +192,6 @@
       top: -8px;
       inset-inline-end: -8px;
     }
-  }
-  .r1-quote img {
-    width: 18px;
-    height: 18px;
-    display: block;
   }
 </style>
 {% endblock %}

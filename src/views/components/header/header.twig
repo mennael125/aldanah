@@ -1,7 +1,4 @@
-{# | Variable | Type | Description |
-|--------------------|------|-----------------------------------| | cart |
-object | | cart.items_count | int | | cart.total | string | Formatted total ex:
-"١٠٠ ر.س" | #} {% set important_links = theme.settings.get('important_links') %}
+{% set important_links = theme.settings.get('important_links') %}
 
 <header class="store-header">
   <div id="mainnav" class="main-nav-container bg-white flex items-center">
@@ -142,7 +139,6 @@ object | | cart.items_count | int | | cart.total | string | Formatted total ex:
                   slot="icon"
                   class="header-btn__icon sicon-shopping-bag text-base"
                 ></i>
-
                 <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
               </salla-cart-summary>
             </div>
@@ -161,21 +157,32 @@ object | | cart.items_count | int | | cart.total | string | Formatted total ex:
 ></salla-scopes>
 {% endif %} {% block styleheader %}
 <style>
-  .main-nav-container {
+  #mainnav.main-nav-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     min-height: 78px;
     width: 100%;
-    margin: 0 auto;
     z-index: 50;
+    background: #fff;
+    height: auto !important; /* يكسر أي height inline من سلة */
   }
 
+  /* لو سلة زودت ارتفاع الهيدر بسبب padding */
+  #mainnav.main-nav-container .inner {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  /* توسيط حقيقي في الديسكتوب */
   @media (min-width: 1024px) {
-    .main-nav-container {
+    #mainnav.main-nav-container {
       width: 90% !important;
       top: 38px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%);
       border-radius: 16px;
     }
   }

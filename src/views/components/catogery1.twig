@@ -1,7 +1,5 @@
 <section class="s-block s-block--banners container">
-  <h3 class="banners-heading">
-    {{ component.cato }}
-  </h3>
+  <h3 class="banners-heading">{{ component.cato }}</h3>
 
   <div class="banners-grid">
     {% for index, banner in component.collectiongrid %}
@@ -38,31 +36,17 @@
   .banners-heading {
     font-family: Cairo, sans-serif;
     font-weight: 600;
-    font-size: 24px;
-    line-height: 100%;
+    font-size: 36px;
+    line-height: 1;
     letter-spacing: 0;
     text-align: center;
-    vertical-align: middle;
     margin: 0 0 46px 0;
-  }
-
-  @media (max-width: 768px) {
-    .banners-heading {
-      margin-bottom: 16px;
-    }
   }
 
   .banners-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  @media (max-width: 768px) {
-    .banners-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+    gap: 24px;
   }
 
   .banner-card {
@@ -74,7 +58,7 @@
   .banner-image {
     display: block;
     width: 100%;
-    aspect-ratio: 1/1;
+    aspect-ratio: 16/9;
     border-radius: 12px;
     background-size: cover;
     background-position: center;
@@ -108,7 +92,7 @@
   .banner-title {
     margin: 0 0 4px 0;
     font-weight: 800;
-    font-size: 16px;
+    font-size: 24px;
     line-height: 1.2;
   }
 
@@ -118,21 +102,32 @@
     opacity: 0.95;
   }
 
+  @media (max-width: 992px) {
+    .banners-heading {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+  }
+
   @media (max-width: 768px) {
+    .banners-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
     .banner-image::before {
       display: none;
     }
-
     .banner-text {
       position: static;
       margin-top: 24px;
       text-align: center;
-      direction: rtl;
     }
-
     .banner-title,
     .banner-desc {
       text-align: center;
+    }
+    .banner-title {
+      font-size: 16px;
     }
   }
 </style>

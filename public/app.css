@@ -1531,6 +1531,15 @@ select {
     margin-bottom: calc(1px * 0);
     margin-bottom: calc(1px * var(--tw-space-y-reverse));
 }
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1.5rem * (1 - 0));
+    margin-top: calc(1.5rem * (1 - var(--tw-space-y-reverse)));
+    margin-top: calc(1.5rem * calc(1 - 0));
+    margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1.5rem * 0);
+    margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
 .divide-y > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-y-reverse: 0;
     border-top-width: calc(1px * (1 - 0));
