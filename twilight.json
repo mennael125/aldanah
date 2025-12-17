@@ -1543,6 +1543,21 @@
             "path": "reviews1",
             "fields": [
                 {
+                    "id": "title",
+                    "type": "string",
+                    "format": "text",
+                    "label": "اسم القسم",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "Placeholder text ..",
+                    "icon": "sicon-format-text-alt",
+                    "value": null,
+                    "multilanguage": false,
+                    "required": false,
+                    "minLength": 6,
+                    "maxLength": 30
+                },
+                {
                     "id": "review",
                     "type": "collection",
                     "format": "collection",
@@ -1552,21 +1567,6 @@
                     "item_label": null,
                     "icon": "sicon-list-add",
                     "fields": [
-                        {
-                            "id": "review.asm_alqsm",
-                            "type": "string",
-                            "format": "text",
-                            "label": "اسم القسم",
-                            "description": null,
-                            "labelHTML": null,
-                            "placeholder": "Placeholder text ..",
-                            "icon": "sicon-format-text-alt",
-                            "value": null,
-                            "multilanguage": false,
-                            "required": false,
-                            "minLength": 6,
-                            "maxLength": 30
-                        },
                         {
                             "id": "review.client",
                             "type": "string",
@@ -1596,17 +1596,6 @@
                             "required": false,
                             "minLength": 6,
                             "maxLength": 30
-                        },
-                        {
-                            "id": "review.icon_picker",
-                            "type": "string",
-                            "format": "icon",
-                            "label": "Icon Picker",
-                            "description": null,
-                            "labelHTML": null,
-                            "icon": "sicon-user-circle",
-                            "value": "sicon-store",
-                            "required": false
                         },
                         {
                             "id": "review.stars",
