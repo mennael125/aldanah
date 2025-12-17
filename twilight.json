@@ -1543,21 +1543,6 @@
             "path": "reviews1",
             "fields": [
                 {
-                    "id": "title",
-                    "type": "string",
-                    "format": "text",
-                    "label": "اسم القسم",
-                    "description": null,
-                    "labelHTML": null,
-                    "placeholder": "Placeholder text ..",
-                    "icon": "sicon-format-text-alt",
-                    "value": null,
-                    "multilanguage": false,
-                    "required": false,
-                    "minLength": 6,
-                    "maxLength": 30
-                },
-                {
                     "id": "review",
                     "type": "collection",
                     "format": "collection",
@@ -1616,6 +1601,21 @@
                     "value": [],
                     "minLength": 1,
                     "maxLength": "30"
+                },
+                {
+                    "id": "title",
+                    "type": "string",
+                    "format": "text",
+                    "label": "اسم القسم",
+                    "description": null,
+                    "labelHTML": null,
+                    "placeholder": "Placeholder text ..",
+                    "icon": "sicon-format-text-alt",
+                    "value": null,
+                    "multilanguage": false,
+                    "required": false,
+                    "minLength": 6,
+                    "maxLength": 30
                 }
             ]
         }
