@@ -1,26 +1,23 @@
 <section class="s-block s-block--reviews1" dir="rtl">
-  {% set blockTitle = section.settings.title ?? attribute(section.settings,
-  'title') ?? section.settings.get('title') ?? component.title ??
-  attribute(component, 'title') ?? component.get('title') ?? '' %} {% set
-  blockTitle = blockTitle|default('')|trim %} {% set reviewsRaw =
-  section.settings.review ?? attribute(section.settings, 'review') ??
-  section.settings.get('review') ?? component.review ?? attribute(component,
-  'review') ?? component.get('review') ?? [] %} {% set reviews =
-  reviewsRaw.value is defined ? reviewsRaw.value : reviewsRaw %}
+  {# Title #} {% set blockTitle = section.settings.title ??
+  attribute(section.settings, 'title') ?? section.settings.get('title') ??
+  component.title ?? attribute(component, 'title') ?? component.get('title') ??
+  '' %} {% set blockTitle = blockTitle|default('')|trim %} {# Reviews list
+  (supports repeater/value) #} {% set reviewsRaw = section.settings.review ??
+  attribute(section.settings, 'review') ?? section.settings.get('review') ??
+  component.review ?? attribute(component, 'review') ?? component.get('review')
+  ?? [] %} {% set reviews = reviewsRaw.value is defined ? reviewsRaw.value :
+  reviewsRaw %}
 
   <div class="container overflow-hidden">
     <div class="s-reviews-header-wrapper">
-      <h1 class="s-reviews-header">
-        {{ blockTitle ? blockTitle : "آراء العملاء" }}
-      </h1>
+      <h2 class="s-reviews-header">{{ blockTitle ?: 'آراء العملاء' }}</h2>
     </div>
 
     {% if reviews and reviews|length %}
-
     <salla-slider
       id="reviews1-{{ position }}-slider"
       class="s-slider-wrapper reviews1-slider"
-      controls-outer
       auto-play
       centered
       loop
@@ -30,15 +27,15 @@
       <div slot="items">
         {% for item in reviews %} {% set name = item['review.client'] ??
         attribute(item, 'review.client') ?? item.client ?? attribute(item,
-        'client') ?? 'أسم العميل' %} {% set name = name|default('')|trim %} {%
+        'client') ?? 'اسم العميل' %} {% set name = name|default('')|trim %} {%
         set text = item['review.reviewtext'] ?? attribute(item,
         'review.reviewtext') ?? item.reviewtext ?? attribute(item, 'reviewtext')
         ?? item.text ?? attribute(item, 'text') ?? '' %} {% set text =
         text|default('')|trim %} {% set rawStars = item['review.stars'] ??
         attribute(item, 'review.stars') ?? item.stars ?? attribute(item,
-        'stars') ?? 0 %} {% set rawStars = rawStars|default(0) %} {% set stars =
-        rawStars %} {% if stars > 5 %}{% set stars = 5 %}{% endif %} {% if stars
-        < 0 %}{% set stars = 0 %}{% endif %}
+        'stars') ?? 0 %} {% set stars = rawStars|default(0) %} {% if stars > 5
+        %}{% set stars = 5 %}{% endif %} {% if stars < 0 %}{% set stars = 0 %}{%
+        endif %}
 
         <div class="swiper-slide">
           <article class="r1-card">
@@ -59,17 +56,13 @@
             <p class="r1-text">{{ text }}</p>
           </article>
         </div>
-
         {% endfor %}
       </div>
     </salla-slider>
-
     {% else %}
-
     <div class="r1-empty">
       لا يوجد بيانات لعرضها — تأكد من إضافة عناصر داخل (review).
     </div>
-
     {% endif %}
   </div>
 </section>
@@ -79,7 +72,6 @@
   .s-block--reviews1 {
     padding: 40px 0;
   }
-
   .s-block--reviews1 .s-reviews-header {
     text-align: center;
     font-size: 38px;
@@ -89,11 +81,11 @@
     font-family: Cairo, sans-serif;
   }
 
+  /* slider */
   .s-block--reviews1 .reviews1-slider {
     padding: 10px 0 26px;
     overflow: visible !important;
   }
-
   .s-block--reviews1 .reviews1-slider .swiper,
   .s-block--reviews1 .reviews1-slider .swiper-wrapper {
     overflow: visible !important;
@@ -103,10 +95,11 @@
     height: auto;
     display: flex;
     align-items: stretch;
-    padding: 0 12px;
     box-sizing: border-box;
+    padding: 0 12px;
   }
 
+  /* card */
   .s-block--reviews1 .r1-card {
     position: relative;
     width: 100%;
@@ -114,13 +107,11 @@
     border: 1px solid #eee;
     border-radius: 8px;
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
-    padding: 18px 16px 16px;
-    padding-top: 22px;
+    padding: 22px 16px 16px;
     text-align: center;
     transition: transform 0.25s ease, box-shadow 0.25s ease,
-      background 0.25s ease;
+      background 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   }
-
   .s-block--reviews1 .r1-quote {
     position: absolute;
     top: -10px;
@@ -134,13 +125,11 @@
     justify-content: center;
     z-index: 2;
   }
-
   .s-block--reviews1 .r1-quote img {
     width: 18px;
     height: 18px;
     display: block;
   }
-
   .s-block--reviews1 .r1-name {
     margin: 0 0 6px;
     font-size: 14px;
@@ -148,14 +137,12 @@
     color: #111;
     font-family: Cairo, sans-serif;
   }
-
   .s-block--reviews1 .r1-stars {
     margin-bottom: 10px;
     direction: ltr;
     display: flex;
     justify-content: center;
   }
-
   .s-block--reviews1 .r1-text {
     margin: 0;
     font-size: 13px;
@@ -164,14 +151,22 @@
     font-family: Cairo, sans-serif;
   }
 
+  /* ✅ Always highlight active (current shown) */
   .s-block--reviews1 .swiper-slide-active .r1-card {
-    background: #f6f6f6;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    background: #f6f6f6 !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08) !important;
     transform: scale(1.02);
   }
-
   .s-block--reviews1 .swiper-slide-active .r1-text {
-    color: #111;
+    color: #111 !important;
+  }
+
+  /* Optional: de-emphasize neighbors */
+  .s-block--reviews1 .swiper-slide-prev .r1-card,
+  .s-block--reviews1 .swiper-slide-next .r1-card {
+    opacity: 0.75;
+    filter: grayscale(0.1);
+    transform: scale(0.99);
   }
 
   .s-block--reviews1 .r1-empty {
@@ -181,16 +176,47 @@
     font-family: Cairo, sans-serif;
   }
 
+  /* ✅ Remove swiper controls on mobile & web (arrows + dots + salla controls) */
+  .s-block--reviews1 .swiper-button-next,
+  .s-block--reviews1 .swiper-button-prev,
+  .s-block--reviews1 [class*="swiper-button"] {
+    display: none !important;
+  }
+  .s-block--reviews1 .swiper-pagination,
+  .s-block--reviews1 [class*="swiper-pagination"] {
+    display: none !important;
+  }
+  .s-block--reviews1 .s-slider-controls,
+  .s-block--reviews1 .s-slider-nav,
+  .s-block--reviews1 .s-slider-pagination {
+    display: none !important;
+  }
+
+  /* ✅ Mobile: show 1 active + peek next */
   @media (max-width: 768px) {
     .s-block--reviews1 .s-reviews-header {
       font-size: 26px;
     }
+
+    .s-block--reviews1 .reviews1-slider {
+      padding-inline-start: 14px;
+      padding-inline-end: 0;
+      overflow: visible !important;
+    }
+
+    .s-block--reviews1 .reviews1-slider .swiper,
+    .s-block--reviews1 .reviews1-slider .swiper-wrapper {
+      overflow: visible !important;
+    }
+
     .s-block--reviews1 .reviews1-slider .swiper-slide {
+      width: 88% !important; /* peek next */
       padding: 0 8px;
     }
+
     .s-block--reviews1 .r1-quote {
       top: -8px;
-      inset-inline-end: -8px;
+      inset-inline-start: -8px;
     }
   }
 </style>
