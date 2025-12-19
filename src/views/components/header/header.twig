@@ -20,7 +20,11 @@
               aria-label="localization"
               onclick="salla.event.dispatch('localization::open')"
             >
-              <img src="{{ 'images/lang.png' | asset }}" alt="" />
+              <img
+                class="head-img"
+                src="{{ 'images/lang.png' | asset }}"
+                alt=""
+              />
             </button>
           </div>
 
@@ -58,7 +62,11 @@
             {% endif %}
 
             <salla-cart-summary class="flex items-center">
-              <img src="{{ 'images/cart.png' | asset }}" alt="" />
+              <img
+                class="head-img"
+                src="{{ 'images/cart.png' | asset }}"
+                alt=""
+              />
             </salla-cart-summary>
           </div>
         </div>
@@ -91,19 +99,14 @@
               <button
                 class="header-btn flex items-center bg-transparent p-0"
                 type="button"
-                aria-label="toggle-theme"
-                onclick="salla.event.dispatch('appearance::toggle')"
-              >
-                <img src="{{ 'images/moon.png' | asset }}" alt="" />
-              </button>
-
-              <button
-                class="header-btn flex items-center bg-transparent p-0"
-                type="button"
                 aria-label="localization"
                 onclick="salla.event.dispatch('localization::open')"
               >
-                <img src="{{ 'images/lang.png' | asset }}" alt="" />
+                <img
+                  class="head-img"
+                  src="{{ 'images/lang.png' | asset }}"
+                  alt=""
+                />
                 <span class="ml-1 rtl:ml-0 rtl:mr-1">اللغة</span>
               </button>
 
@@ -113,7 +116,11 @@
                 aria-label="search"
                 onclick="salla.event.dispatch('search::toggle')"
               >
-                <img src="{{ 'images/search.png' | asset }}" alt="" />
+                <img
+                  class="head-img"
+                  src="{{ 'images/search.png' | asset }}"
+                  alt=""
+                />
                 <span class="ml-1 rtl:ml-0 rtl:mr-1">بحث</span>
               </button>
 
@@ -132,10 +139,26 @@
               {% endif %}
 
               <salla-cart-summary class="flex items-center">
-                <img src="{{ 'images/cart.png' | asset }}" alt="" />
+                <img
+                  class="head-img"
+                  src="{{ 'images/cart.png' | asset }}"
+                  alt=""
+                />
 
                 <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
               </salla-cart-summary>
+              <button
+                class="header-btn flex items-center bg-transparent p-0"
+                type="button"
+                aria-label="toggle-theme"
+                onclick="salla.event.dispatch('appearance::toggle')"
+              >
+                <img
+                  class="head-img"
+                  src="{{ 'images/moon.png' | asset }}"
+                  alt=""
+                />
+              </button>
             </div>
           </div>
         </div>
