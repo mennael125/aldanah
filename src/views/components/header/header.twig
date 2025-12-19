@@ -20,7 +20,7 @@
               aria-label="localization"
               onclick="salla.event.dispatch('localization::open')"
             >
-              <i class="header-btn__icon sicon-language text-base"></i>
+              <img src="{{ 'images/lang.png' | asset }}" alt="" />
             </button>
           </div>
 
@@ -53,15 +53,12 @@
               type="button"
               onclick="salla.event.dispatch('login::open')"
             >
-              <i class="header-btn__icon sicon-user-circle text-base"></i>
+              <img src="{{ 'images/user.png' | asset }}" alt="" />
             </button>
             {% endif %}
 
             <salla-cart-summary class="flex items-center">
-              <i
-                slot="icon"
-                class="header-btn__icon sicon-shopping-bag text-base"
-              ></i>
+              <img src="{{ 'images/cart.png' | asset }}" alt="" />
             </salla-cart-summary>
           </div>
         </div>
@@ -97,7 +94,7 @@
                 aria-label="toggle-theme"
                 onclick="salla.event.dispatch('appearance::toggle')"
               >
-                <i class="header-btn__icon sicon-moon text-base"></i>
+                <img src="{{ 'images/moon.png' | asset }}" alt="" />
               </button>
 
               <button
@@ -106,7 +103,7 @@
                 aria-label="localization"
                 onclick="salla.event.dispatch('localization::open')"
               >
-                <i class="header-btn__icon sicon-global text-base"></i>
+                <img src="{{ 'images/lang.png' | asset }}" alt="" />
                 <span class="ml-1 rtl:ml-0 rtl:mr-1">اللغة</span>
               </button>
 
@@ -116,7 +113,7 @@
                 aria-label="search"
                 onclick="salla.event.dispatch('search::toggle')"
               >
-                <i class="header-btn__icon sicon-search text-base"></i>
+                <img src="{{ 'images/search.png' | asset }}" alt="" />
                 <span class="ml-1 rtl:ml-0 rtl:mr-1">بحث</span>
               </button>
 
@@ -129,16 +126,14 @@
                 type="button"
                 onclick="salla.event.dispatch('login::open')"
               >
-                <i class="header-btn__icon sicon-user-circle text-base"></i>
+                <img src="{{ 'images/user.png' | asset }}" alt="" />
                 <span class="ml-1 rtl:ml-0 rtl:mr-1">الحساب</span>
               </button>
               {% endif %}
 
               <salla-cart-summary class="flex items-center">
-                <i
-                  slot="icon"
-                  class="header-btn__icon sicon-shopping-bag text-base"
-                ></i>
+                <img src="{{ 'images/cart.png' | asset }}" alt="" />
+
                 <span slot="title" class="ml-1 rtl:ml-0 rtl:mr-1">السلة</span>
               </salla-cart-summary>
             </div>
@@ -166,16 +161,14 @@
     width: 100%;
     z-index: 50;
     background: #fff;
-    height: auto !important; /* يكسر أي height inline من سلة */
+    height: auto !important;
   }
 
-  /* لو سلة زودت ارتفاع الهيدر بسبب padding */
   #mainnav.main-nav-container .inner {
     padding-top: 18px;
     padding-bottom: 18px;
   }
 
-  /* توسيط حقيقي في الديسكتوب */
   @media (min-width: 1024px) {
     #mainnav.main-nav-container {
       width: 90% !important;
