@@ -1,21 +1,10 @@
 <section class="s-block s-block--counter" dir="rtl">
-  {% set target = section.settings.counterdate ?? attribute(section.settings,
-  'counterdate') ?? section.settings.get('counterdate') ?? component.counterdate
-  ?? attribute(component, 'counterdate') ?? component.get('counterdate') ?? ''
-  %} {% set mainText = section.settings.maintextcount ??
-  attribute(section.settings, 'maintextcount') ??
-  section.settings.get('maintextcount') ?? component.maintextcount ??
-  attribute(component, 'maintextcount') ?? component.get('maintextcount') ?? ''
-  %} {% set subText = section.settings.subtextcount ??
-  attribute(section.settings, 'subtextcount') ??
-  section.settings.get('subtextcount') ?? component.subtextcount ??
-  attribute(component, 'subtextcount') ?? component.get('subtextcount') ?? '' %}
-  {% set imgSrc = section.settings.imagecount ?? attribute(section.settings,
-  'imagecount') ?? section.settings.get('imagecount') ?? component.imagecount ??
-  attribute(component, 'imagecount') ?? component.get('imagecount') ?? '' %} {%
-  set target = target|default('')|trim %} {% set mainText =
-  mainText|default('')|trim %} {% set subText = subText|default('')|trim %} {%
-  set imgSrc = imgSrc|default('')|trim %}
+  {% set target = (section.settings.counterdate ?? component.counterdate ?? '')
+  | default('') | trim %} {% set mainText = (section.settings.maintextcount ??
+  component.maintextcount ?? '') | default('') | trim %} {% set subText =
+  (section.settings.subtextcount ?? component.subtextcount ?? '') | default('')
+  | trim %} {% set imgSrc = (section.settings.imagecount ?? component.imagecount
+  ?? '') | default('') | trim %}
 
   <div class="counter-wrap" data-countdown="{{ target }}">
     <div class="counter-left">
@@ -45,6 +34,39 @@
       {% endif %}
 
       <div class="counter-msg" hidden></div>
+
+      {% set buttonUrl = section.settings.buttonurl1 ??
+      attribute(section.settings,'buttonurl1') ??
+      section.settings.get('buttonurl1') ?? component.buttonurl1 ??
+      attribute(component,'buttonurl1') ?? component.get('buttonurl1') ?? '' %}
+      {% set buttonText = section.settings.buttonname ??
+      attribute(section.settings,'buttonname') ??
+      section.settings.get('buttonname') ?? component.buttonname ??
+      attribute(component,'buttonname') ?? component.get('buttonname') ?? '' %}
+      {% set btnBg = section.settings.backbutton ??
+      attribute(section.settings,'backbutton') ??
+      section.settings.get('backbutton') ?? component.backbutton ??
+      attribute(component,'backbutton') ?? component.get('backbutton') ?? '' %}
+      {% set btnColor = section.settings.buttoncolor ??
+      attribute(section.settings,'buttoncolor') ??
+      section.settings.get('buttoncolor') ?? component.buttoncolor ??
+      attribute(component,'buttoncolor') ?? component.get('buttoncolor') ?? ''
+      %} {% set buttonUrl = buttonUrl|default('')|trim %} {% set buttonText =
+      buttonText|default('')|trim %} {% set btnBg =
+      btnBg|default('#004956')|trim %} {% set btnColor =
+      btnColor|default('#ffffff')|trim %} {% if buttonUrl and buttonText %}
+      <a
+        href="{{ buttonUrl }}"
+        class="counter-btn"
+        style="background:{{
+          btnBg
+        }};border-radius:8px;border:1px solid rgba(255,255,255,0.15);color:{{
+          btnColor
+        }};"
+      >
+        {{ buttonText }}
+      </a>
+      {% endif %}
     </div>
 
     <div class="counter-right">
@@ -189,6 +211,29 @@
       flex-direction: column-reverse;
       padding: 16px;
     }
+  }
+  .counter-btn {
+    width: 203px;
+    min-height: 48px;
+    height: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    padding: 6px 12px;
+    border-radius: 2px;
+    box-sizing: border-box;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 </style>
 {% endblock %} {% block scriptcounter %}
