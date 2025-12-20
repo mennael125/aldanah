@@ -1495,6 +1495,18 @@
                     "required": false
                 },
                 {
+                    "id": "backbutton",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "خلفيه الزر",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
+                },
+                {
                     "id": "subtextcount",
                     "type": "string",
                     "format": "text",
@@ -1508,6 +1520,18 @@
                     "required": false,
                     "minLength": 6,
                     "maxLength": 30
+                },
+                {
+                    "id": "buttoncolor",
+                    "type": "string",
+                    "format": "color",
+                    "inputType": "color",
+                    "label": "لون الزر",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-format-fill",
+                    "value": "#004956",
+                    "required": false
                 },
                 {
                     "id": "maintextcount",
