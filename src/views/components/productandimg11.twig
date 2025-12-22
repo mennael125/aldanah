@@ -1,154 +1,115 @@
-{# 1) خدي عناصر الـ collection بأي شكل راجع #} {% set items =
-component.product111.value ?? component.product111 ?? [] %} {% if items|length
-%}
-<section class="product-img-slider" id="product-img-slider-{{ component.id }}">
-  <div class="product-img-slider__wrap">
-    <div class="swiper product-img-slider__swiper">
-      <div class="swiper-wrapper">
-        {% for it in items %} {# 2) اقرأي القيم بأكثر من احتمال (عشان اختلاف
-        هيكلة البيانات) #} {% set img = it.img ?? it['product111.img'] ?? '' %}
-        {% set url = it.prrurl ?? it['product111.prrurl'] ?? '' %}
+{% set items = section.settings.product111 ?? [] %}
 
-        <div class="swiper-slide">
-          <div class="product-img-slider__grid">
-            <div class="product-img-slider__left">
-              <div class="product-slot" data-product-url="{{ url | e }}">
-                جاري تحميل المنتج...
-              </div>
-            </div>
+<div class="productandimg11">
+  {% for row in items %} {% set url = row.prrurl ?? row['product111.prrurl'] ??
+  '' %}
 
-            <div class="product-img-slider__right">
-              {% if img %}
-              <img
-                src="{{ img }}"
-                alt="slide image"
-                style="
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  display: block;
-                "
-              />
-              {% else %} {# للتأكد إن المشكلة من البيانات مش من الـ CSS #}
-              <div
-                style="padding: 16px; background: #fff; border: 1px dashed #ccc"
-              >
-                لا توجد صورة في إعدادات السلايد
-              </div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
+  <div
+    class="productandimg11__item"
+    data-product-url="{{ url|e('html_attr') }}"
+  >
+    <div class="productandimg11__loading">Loading product...</div>
 
-      <div class="product-img-slider__center">
-        <span class="product-img-slider__counter"
-          ><span class="current">1</span></span
-        >
-      </div>
-    </div>
+    {# ✅ بوكس سلة الجاهز #}
+    <salla-product-card
+      class="productandimg11__card"
+      style="display: none"
+    ></salla-product-card>
   </div>
-</section>
+  {% endfor %}
+</div>
 
 <script>
   (function () {
-    const root = document.getElementById(
-      "product-img-slider-{{ component.id }}"
-    );
-    if (!root) return;
-
-    // ✅ Swiper (اختياري)
-    if (window.Swiper) {
-      const counterEl = root.querySelector(
-        ".product-img-slider__center .current"
-      );
-      const swiperEl = root.querySelector(".product-img-slider__swiper");
-
-      const sw = new Swiper(swiperEl, {
-        loop: true,
-        on: {
-          init() {
-            update(this);
-          },
-          slideChange() {
-            update(this);
-          },
-        },
-      });
-
-      function update(swiper) {
-        const n = (swiper.realIndex || 0) + 1;
-        if (counterEl) counterEl.textContent = n;
-      }
+    function extractIdFromSallaUrl(url) {
+      // مثال: /بلوزة/p23491035  => 23491035 + p23491035
+      const m = String(url).match(/\/p(\d+)(?:[\/?#]|$)/i);
+      if (!m) return { numeric: null, withP: null };
+      return { numeric: m[1], withP: "p" + m[1] };
     }
 
-    // ✅ Load product from URL
-    const slots = root.querySelectorAll(".product-slot");
+    function waitFor(conditionFn, timeoutMs = 8000, intervalMs = 50) {
+      return new Promise((resolve, reject) => {
+        const start = Date.now();
+        const t = setInterval(() => {
+          if (conditionFn()) {
+            clearInterval(t);
+            resolve(true);
+          } else if (Date.now() - start > timeoutMs) {
+            clearInterval(t);
+            reject(new Error("Timeout waiting for Salla SDK"));
+          }
+        }, intervalMs);
+      });
+    }
 
-    slots.forEach(async (slot) => {
-      const url = (slot.dataset.productUrl || "").trim();
+    async function getDetailsTryBoth(productIdNumeric, productIdWithP) {
+      const s = window.salla;
+      if (!s || !s.product) throw new Error("Salla SDK not available");
 
-      // لو ده ظهر يبقى المشكلة من الـ Twig (الرابط مش واصل)
+      const fn =
+        (typeof s.product.getDetails === "function" && s.product.getDetails) ||
+        (s.product.api &&
+          typeof s.product.api.getDetails === "function" &&
+          s.product.api.getDetails);
+
+      if (!fn) throw new Error("getDetails not found");
+
+      // نجرب id رقمي
+      try {
+        return await fn.call(s.product.api ? s.product.api : s.product, {
+          id: productIdNumeric,
+        });
+      } catch (e) {}
+
+      // نجرب id مع p
+      return await fn.call(s.product.api ? s.product.api : s.product, {
+        id: productIdWithP,
+      });
+    }
+
+    function normalizeProduct(res) {
+      // نخليها مرنة حسب شكل الريسبونس
+      return res?.data?.product || res?.data || res?.product || res;
+    }
+
+    async function renderOne(box) {
+      const url = box.getAttribute("data-product-url");
+      const loading = box.querySelector(".productandimg11__loading");
+      const card = box.querySelector(".productandimg11__card");
+
       if (!url) {
-        slot.innerHTML =
-          '<div style="padding:10px;border:1px dashed #ccc;">رابط المنتج غير موجود داخل السلايد</div>';
+        loading.textContent = "No URL";
         return;
       }
 
-      const id = extractProductId(url); // من /p23491035
-      if (!id) {
-        slot.innerHTML =
-          '<div style="padding:10px;border:1px dashed #ccc;">الرابط لا يحتوي على /pID</div>';
+      const ids = extractIdFromSallaUrl(url);
+      if (!ids.numeric) {
+        loading.textContent = "Invalid product URL";
         return;
       }
+
+      // استنى SDK يبقى جاهز
+      await waitFor(() => window.salla && window.salla.product);
 
       try {
-        // سلة Twilight SDK عندها getDetails() للمنتج :contentReference[oaicite:0]{index=0}
-        const product = await getProductDetails(id);
-        if (!product) throw new Error("No product data");
+        const res = await getDetailsTryBoth(ids.numeric, ids.withP);
+        const product = normalizeProduct(res);
 
-        slot.innerHTML = `<custom-salla-product-card shadow-on-hover isSpecial product='${escapeAttr(
-          JSON.stringify(product)
-        )}'></custom-salla-product-card>`;
+        if (!product || !product.id) throw new Error("Empty product payload");
+
+        // ✅ salla-product-card لازم ياخد JSON string
+        card.setAttribute("product", JSON.stringify(product));
+        card.style.display = "";
+        loading.style.display = "none";
       } catch (e) {
-        console.error(e);
-        slot.innerHTML =
-          '<div style="padding:10px;border:1px dashed #f00;">تعذر تحميل المنتج (راجعي Console)</div>';
+        loading.textContent = "Failed to load product";
+        console.error("Product load error:", e);
       }
+    }
+
+    document.querySelectorAll(".productandimg11__item").forEach((box) => {
+      renderOne(box);
     });
-
-    function extractProductId(url) {
-      const m = url.match(/\/p(\d+)(?:\/|$|\?)/i);
-      return m && m[1] ? m[1] : null;
-    }
-
-    async function getProductDetails(productId) {
-      if (!window.salla) throw new Error("Twilight SDK not found");
-
-      // اختلافات بسيطة بين الثيمات/الإصدارات — نخليها fallbacks
-      if (salla?.product?.api?.getDetails) {
-        const res = await salla.product.api.getDetails({
-          product_id: String(productId),
-        });
-        return res?.data?.product || res?.product || res?.data;
-      }
-      if (salla?.product?.getDetails) {
-        const res = await salla.product.getDetails(String(productId));
-        return res?.data?.product || res?.product || res?.data;
-      }
-
-      throw new Error("No getDetails method found");
-    }
-
-    function escapeAttr(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/'/g, "&#39;")
-        .replace(/"/g, "&quot;");
-    }
   })();
 </script>
-{% endif %}
