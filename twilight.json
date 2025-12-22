@@ -1720,7 +1720,7 @@
                             "selected": [],
                             "options": [],
                             "source": "Products",
-                            "multichoice": true,
+                            "multichoice": false,
                             "searchable": true,
                             "required": false,
                             "value": []
@@ -1734,11 +1734,18 @@
                             "labelHTML": null,
                             "icon": "sicon-keyboard_arrow_down",
                             "selected": [],
-                            "options": [],
-                            "source": "Manual",
+                            "options": [
+                                {
+                                    "label": "رررررررررررررررر",
+                                    "value": "Value 1ررررر",
+                                    "key": "71b5385d-7464-4bdf-a247-6e5601afe7f6"
+                                }
+                            ],
+                            "source": "Categories",
                             "multichoice": true,
-                            "searchable": true,
-                            "required": false
+                            "searchable": false,
+                            "required": false,
+                            "value": []
                         }
                     ],
                     "value": [],
