@@ -18370,21 +18370,6 @@ input[type=radio].sr-only:checked ~ div.s-wallet-table-tbody-tr a {
 .s-wallet-table-tbody-tr a:where([dir="rtl"], [dir="rtl"] *) {
     right: 0px;
 }
-.\[oaicite\:0\] {
-    oaicite: 0;
-}
-.\[oaicite\:1\] {
-    oaicite: 1;
-}
-.\[oaicite\:3\] {
-    oaicite: 3;
-}
-.\[oaicite\:4\] {
-    oaicite: 4;
-}
-.\[oaicite\:5\] {
-    oaicite: 5;
-}
 :root {
   --infinte-color: #c9c9c9;
   --main-text-color: #231f1e;
