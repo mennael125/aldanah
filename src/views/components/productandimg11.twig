@@ -1,0 +1,161 @@
+{% set slides = component.product111 ?? [] %} {% if slides|length %}
+
+<section class="hero-split-slider" id="hero-split-slider-{{ component.id }}">
+  <div class="swiper hero-split-slider__swiper">
+    <div class="swiper-wrapper">
+      {% for s in slides %}
+      <div class="swiper-slide">
+        <div class="hero-split-slider__grid">
+          {# LEFT: هنا هنحط المنتج بعد ما الـ JS يجيبه من الرابط #}
+          <div class="hero-split-slider__left">
+            <div
+              class="hero-split-slider__product-slot"
+              data-product-url="{{ s['product111.prrurl']|default('')|e }}"
+              data-slide-index="{{ loop.index }}"
+            >
+              <div class="hero-split-slider__loading">جاري تحميل المنتج...</div>
+            </div>
+          </div>
+
+          {# RIGHT: الصورة اللي بتديها في الإعدادات #}
+          <div class="hero-split-slider__right">
+            {% if s['product111.img'] %}
+            <img src="{{ s['product111.img'] }}" alt="slide image" />
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {# عداد رقم السلايد (زي اللي في تصميمك) #}
+    <div class="hero-split-slider__center">
+      <span class="hero-split-slider__counter">
+        <span class="hero-split-slider__counter-current">1</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById("hero-split-slider-{{ component.id }}");
+    if (!root) return;
+
+    // ------- Swiper Counter -------
+    if (window.Swiper) {
+      var counterCurrent = root.querySelector(
+        ".hero-split-slider__counter-current"
+      );
+      var swiperEl = root.querySelector(".hero-split-slider__swiper");
+
+      var sw = new Swiper(swiperEl, {
+        loop: true,
+        on: {
+          init: function () {
+            updateCounter(this);
+          },
+          slideChange: function () {
+            updateCounter(this);
+          },
+        },
+      });
+
+      function updateCounter(swiper) {
+        var current = (swiper.realIndex || 0) + 1;
+        if (counterCurrent) counterCurrent.textContent = current;
+      }
+    }
+
+    // ------- Product from URL -> Inject into custom-salla-product-card -------
+    var slots = root.querySelectorAll(".hero-split-slider__product-slot");
+
+    slots.forEach(async function (slot) {
+      var url = (slot.getAttribute("data-product-url") || "").trim();
+      if (!url) {
+        slot.innerHTML =
+          '<div class="hero-split-slider__error">لا يوجد رابط منتج</div>';
+        return;
+      }
+
+      var productId = extractProductId(url);
+      if (!productId) {
+        slot.innerHTML =
+          '<div class="hero-split-slider__error">الرابط لا يحتوي على رقم منتج واضح</div>';
+        return;
+      }
+
+      try {
+        var product = await getProductDetails(productId);
+        if (!product) throw new Error("No product returned");
+
+        // أهم سطر: product لازم يكون STRING (JSON)
+        slot.innerHTML =
+          "<custom-salla-product-card shadow-on-hover isSpecial product='" +
+          escapeAttr(JSON.stringify(product)) +
+          "'></custom-salla-product-card>";
+      } catch (e) {
+        slot.innerHTML =
+          '<div class="hero-split-slider__error">تعذر تحميل المنتج</div>';
+        console.error(e);
+      }
+    });
+
+    // يحاول يلقط الـ ID من أغلب روابط سلة الشائعة (p123456 أو آخر أرقام في الرابط)
+    function extractProductId(url) {
+      try {
+        // مثال شائع: .../p123456789
+        var m1 = url.match(/\/p(\d+)(?:\/|$|\?)/i);
+        if (m1 && m1[1]) return m1[1];
+
+        // مثال آخر: آخر سيجمنت أرقام
+        var m2 = url.match(/\/(\d+)(?:\/|$|\?)/);
+        if (m2 && m2[1]) return m2[1];
+
+        return null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    // نستخدم Twilight SDK لو موجود (سلة بتعمل inject للـ SDK في Twilight themes) :contentReference[oaicite:1]{index=1}
+    async function getProductDetails(productId) {
+      if (!window.salla) throw new Error("Twilight SDK not found");
+
+      // بنجرب كذا signature لأن الثيمات/الإصدارات بتختلف
+      if (salla.product && salla.product.api) {
+        if (typeof salla.product.api.getDetails === "function")
+          return (
+            (await salla.product.api.getDetails({ product_id: productId })).data
+              ?.product ||
+            (await salla.product.api.getDetails({ id: productId })).data
+              ?.product ||
+            (await salla.product.api.getDetails(productId)).data?.product ||
+            (await salla.product.api.getDetails(productId)).product ||
+            (await salla.product.api.getDetails({ product: productId })).product
+          );
+      }
+
+      // fallback: لو عندك method مختلفة
+      if (salla.product && typeof salla.product.getDetails === "function") {
+        return (
+          (await salla.product.getDetails(productId)).data?.product ||
+          (await salla.product.getDetails(productId)).product
+        );
+      }
+
+      throw new Error("No getDetails method found");
+    }
+
+    function escapeAttr(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/'/g, "&#39;")
+        .replace(/"/g, "&quot;");
+    }
+  })();
+</script>
+
+{% endif %}
