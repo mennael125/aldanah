@@ -1710,42 +1710,19 @@
                             "required": false
                         },
                         {
-                            "id": "product111.product",
-                            "type": "items",
-                            "format": "dropdown-list",
-                            "label": "product",
+                            "id": "product111.prrurl",
+                            "type": "string",
+                            "format": "url",
+                            "inputType": "url",
+                            "label": "رابط المنتج",
                             "description": null,
                             "labelHTML": null,
-                            "icon": "sicon-keyboard_arrow_down",
-                            "selected": [],
-                            "options": [],
-                            "source": "Products",
-                            "multichoice": false,
-                            "searchable": true,
+                            "placeholder": "e.g. https://salla.sa",
+                            "icon": "sicon-link",
+                            "value": null,
                             "required": false,
-                            "value": []
-                        },
-                        {
-                            "id": "product111.dropdown_list",
-                            "type": "items",
-                            "format": "dropdown-list",
-                            "label": "Dropdown List",
-                            "description": null,
-                            "labelHTML": null,
-                            "icon": "sicon-keyboard_arrow_down",
-                            "selected": [],
-                            "options": [
-                                {
-                                    "label": "رررررررررررررررر",
-                                    "value": "Value 1ررررر",
-                                    "key": "71b5385d-7464-4bdf-a247-6e5601afe7f6"
-                                }
-                            ],
-                            "source": "Categories",
-                            "multichoice": true,
-                            "searchable": false,
-                            "required": false,
-                            "value": []
+                            "minLength": 6,
+                            "maxLength": 30
                         }
                     ],
                     "value": [],
