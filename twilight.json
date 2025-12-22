@@ -1593,16 +1593,6 @@
             ]
         },
         {
-            "key": "d7618bd4-d6f8-4191-b500-c87cf2aa2f7c",
-            "title": {
-                "en": "imagcat",
-                "ar": "القسم و الصوره"
-            },
-            "icon": "sicon-store",
-            "path": "imagcatsli11",
-            "fields": []
-        },
-        {
             "key": "9773a4ec-d438-454a-b716-480d853ef9d9",
             "title": {
                 "en": "reviews",
