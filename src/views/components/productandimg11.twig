@@ -1,147 +1,141 @@
-{% set slides = component.product111 ?? [] %} {% if slides|length %}
+{# 1) خدي عناصر الـ collection بأي شكل راجع #} {% set items =
+component.product111.value ?? component.product111 ?? [] %} {% if items|length
+%}
+<section class="product-img-slider" id="product-img-slider-{{ component.id }}">
+  <div class="product-img-slider__wrap">
+    <div class="swiper product-img-slider__swiper">
+      <div class="swiper-wrapper">
+        {% for it in items %} {# 2) اقرأي القيم بأكثر من احتمال (عشان اختلاف
+        هيكلة البيانات) #} {% set img = it.img ?? it['product111.img'] ?? '' %}
+        {% set url = it.prrurl ?? it['product111.prrurl'] ?? '' %}
 
-<section class="hero-split-slider" id="hero-split-slider-{{ component.id }}">
-  <div class="swiper hero-split-slider__swiper">
-    <div class="swiper-wrapper">
-      {% for s in slides %}
-      <div class="swiper-slide">
-        <div class="hero-split-slider__grid">
-          {# LEFT: هنا هنحط المنتج بعد ما الـ JS يجيبه من الرابط #}
-          <div class="hero-split-slider__left">
-            <div
-              class="hero-split-slider__product-slot"
-              data-product-url="{{ s['product111.prrurl']|default('')|e }}"
-              data-slide-index="{{ loop.index }}"
-            >
-              <div class="hero-split-slider__loading">جاري تحميل المنتج...</div>
+        <div class="swiper-slide">
+          <div class="product-img-slider__grid">
+            <div class="product-img-slider__left">
+              <div class="product-slot" data-product-url="{{ url | e }}">
+                جاري تحميل المنتج...
+              </div>
+            </div>
+
+            <div class="product-img-slider__right">
+              {% if img %}
+              <img
+                src="{{ img }}"
+                alt="slide image"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                "
+              />
+              {% else %} {# للتأكد إن المشكلة من البيانات مش من الـ CSS #}
+              <div
+                style="padding: 16px; background: #fff; border: 1px dashed #ccc"
+              >
+                لا توجد صورة في إعدادات السلايد
+              </div>
+              {% endif %}
             </div>
           </div>
-
-          {# RIGHT: الصورة اللي بتديها في الإعدادات #}
-          <div class="hero-split-slider__right">
-            {% if s['product111.img'] %}
-            <img src="{{ s['product111.img'] }}" alt="slide image" />
-            {% endif %}
-          </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
 
-    {# عداد رقم السلايد (زي اللي في تصميمك) #}
-    <div class="hero-split-slider__center">
-      <span class="hero-split-slider__counter">
-        <span class="hero-split-slider__counter-current">1</span>
-      </span>
+      <div class="product-img-slider__center">
+        <span class="product-img-slider__counter"
+          ><span class="current">1</span></span
+        >
+      </div>
     </div>
   </div>
 </section>
 
 <script>
   (function () {
-    var root = document.getElementById("hero-split-slider-{{ component.id }}");
+    const root = document.getElementById(
+      "product-img-slider-{{ component.id }}"
+    );
     if (!root) return;
 
-    // ------- Swiper Counter -------
+    // ✅ Swiper (اختياري)
     if (window.Swiper) {
-      var counterCurrent = root.querySelector(
-        ".hero-split-slider__counter-current"
+      const counterEl = root.querySelector(
+        ".product-img-slider__center .current"
       );
-      var swiperEl = root.querySelector(".hero-split-slider__swiper");
+      const swiperEl = root.querySelector(".product-img-slider__swiper");
 
-      var sw = new Swiper(swiperEl, {
+      const sw = new Swiper(swiperEl, {
         loop: true,
         on: {
-          init: function () {
-            updateCounter(this);
+          init() {
+            update(this);
           },
-          slideChange: function () {
-            updateCounter(this);
+          slideChange() {
+            update(this);
           },
         },
       });
 
-      function updateCounter(swiper) {
-        var current = (swiper.realIndex || 0) + 1;
-        if (counterCurrent) counterCurrent.textContent = current;
+      function update(swiper) {
+        const n = (swiper.realIndex || 0) + 1;
+        if (counterEl) counterEl.textContent = n;
       }
     }
 
-    // ------- Product from URL -> Inject into custom-salla-product-card -------
-    var slots = root.querySelectorAll(".hero-split-slider__product-slot");
+    // ✅ Load product from URL
+    const slots = root.querySelectorAll(".product-slot");
 
-    slots.forEach(async function (slot) {
-      var url = (slot.getAttribute("data-product-url") || "").trim();
+    slots.forEach(async (slot) => {
+      const url = (slot.dataset.productUrl || "").trim();
+
+      // لو ده ظهر يبقى المشكلة من الـ Twig (الرابط مش واصل)
       if (!url) {
         slot.innerHTML =
-          '<div class="hero-split-slider__error">لا يوجد رابط منتج</div>';
+          '<div style="padding:10px;border:1px dashed #ccc;">رابط المنتج غير موجود داخل السلايد</div>';
         return;
       }
 
-      var productId = extractProductId(url);
-      if (!productId) {
+      const id = extractProductId(url); // من /p23491035
+      if (!id) {
         slot.innerHTML =
-          '<div class="hero-split-slider__error">الرابط لا يحتوي على رقم منتج واضح</div>';
+          '<div style="padding:10px;border:1px dashed #ccc;">الرابط لا يحتوي على /pID</div>';
         return;
       }
 
       try {
-        var product = await getProductDetails(productId);
-        if (!product) throw new Error("No product returned");
+        // سلة Twilight SDK عندها getDetails() للمنتج :contentReference[oaicite:0]{index=0}
+        const product = await getProductDetails(id);
+        if (!product) throw new Error("No product data");
 
-        // أهم سطر: product لازم يكون STRING (JSON)
-        slot.innerHTML =
-          "<custom-salla-product-card shadow-on-hover isSpecial product='" +
-          escapeAttr(JSON.stringify(product)) +
-          "'></custom-salla-product-card>";
+        slot.innerHTML = `<custom-salla-product-card shadow-on-hover isSpecial product='${escapeAttr(
+          JSON.stringify(product)
+        )}'></custom-salla-product-card>`;
       } catch (e) {
-        slot.innerHTML =
-          '<div class="hero-split-slider__error">تعذر تحميل المنتج</div>';
         console.error(e);
+        slot.innerHTML =
+          '<div style="padding:10px;border:1px dashed #f00;">تعذر تحميل المنتج (راجعي Console)</div>';
       }
     });
 
-    // يحاول يلقط الـ ID من أغلب روابط سلة الشائعة (p123456 أو آخر أرقام في الرابط)
     function extractProductId(url) {
-      try {
-        // مثال شائع: .../p123456789
-        var m1 = url.match(/\/p(\d+)(?:\/|$|\?)/i);
-        if (m1 && m1[1]) return m1[1];
-
-        // مثال آخر: آخر سيجمنت أرقام
-        var m2 = url.match(/\/(\d+)(?:\/|$|\?)/);
-        if (m2 && m2[1]) return m2[1];
-
-        return null;
-      } catch (_) {
-        return null;
-      }
+      const m = url.match(/\/p(\d+)(?:\/|$|\?)/i);
+      return m && m[1] ? m[1] : null;
     }
 
-    // نستخدم Twilight SDK لو موجود (سلة بتعمل inject للـ SDK في Twilight themes) :contentReference[oaicite:1]{index=1}
     async function getProductDetails(productId) {
       if (!window.salla) throw new Error("Twilight SDK not found");
 
-      // بنجرب كذا signature لأن الثيمات/الإصدارات بتختلف
-      if (salla.product && salla.product.api) {
-        if (typeof salla.product.api.getDetails === "function")
-          return (
-            (await salla.product.api.getDetails({ product_id: productId })).data
-              ?.product ||
-            (await salla.product.api.getDetails({ id: productId })).data
-              ?.product ||
-            (await salla.product.api.getDetails(productId)).data?.product ||
-            (await salla.product.api.getDetails(productId)).product ||
-            (await salla.product.api.getDetails({ product: productId })).product
-          );
+      // اختلافات بسيطة بين الثيمات/الإصدارات — نخليها fallbacks
+      if (salla?.product?.api?.getDetails) {
+        const res = await salla.product.api.getDetails({
+          product_id: String(productId),
+        });
+        return res?.data?.product || res?.product || res?.data;
       }
-
-      // fallback: لو عندك method مختلفة
-      if (salla.product && typeof salla.product.getDetails === "function") {
-        return (
-          (await salla.product.getDetails(productId)).data?.product ||
-          (await salla.product.getDetails(productId)).product
-        );
+      if (salla?.product?.getDetails) {
+        const res = await salla.product.getDetails(String(productId));
+        return res?.data?.product || res?.product || res?.data;
       }
 
       throw new Error("No getDetails method found");
@@ -157,5 +151,4 @@
     }
   })();
 </script>
-
 {% endif %}
