@@ -1710,19 +1710,20 @@
                             "required": false
                         },
                         {
-                            "id": "product111.prrurl",
-                            "type": "string",
-                            "format": "url",
-                            "inputType": "url",
-                            "label": "رابط المنتج",
+                            "id": "product111.product11",
+                            "type": "items",
+                            "format": "dropdown-list",
+                            "label": "المنتج",
                             "description": null,
                             "labelHTML": null,
-                            "placeholder": "e.g. https://salla.sa",
-                            "icon": "sicon-link",
-                            "value": null,
+                            "icon": "sicon-keyboard_arrow_down",
+                            "selected": [],
+                            "options": [],
+                            "source": "Products",
+                            "multichoice": true,
+                            "searchable": true,
                             "required": false,
-                            "minLength": 6,
-                            "maxLength": "554"
+                            "value": []
                         }
                     ],
                     "value": [],
