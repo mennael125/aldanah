@@ -941,6 +941,9 @@ select {
 .top-full {
     top: 100%;
 }
+.top-3 {
+    top: 0.75rem;
+}
 .-z-1 {
     z-index: -1;
 }
@@ -1127,6 +1130,9 @@ select {
 .hidden {
     display: none;
 }
+.aspect-square {
+    aspect-ratio: 1 / 1;
+}
 .\!h-36 {
     height: 9rem !important;
 }
@@ -1195,6 +1201,9 @@ select {
 }
 .h-px {
     height: 1px;
+}
+.h-8 {
+    height: 2rem;
 }
 .max-h-0 {
     max-height: 0px;
@@ -24525,6 +24534,9 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
 .ltr\:right-4:where([dir="ltr"], [dir="ltr"] *) {
     right: 1rem;
 }
+.ltr\:right-3:where([dir="ltr"], [dir="ltr"] *) {
+    right: 0.75rem;
+}
 .ltr\:ml-1:where([dir="ltr"], [dir="ltr"] *) {
     margin-left: 0.25rem;
 }
@@ -24645,6 +24657,9 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
 }
 .rtl\:right-0:where([dir="rtl"], [dir="rtl"] *) {
     right: 0px;
+}
+.rtl\:left-3:where([dir="rtl"], [dir="rtl"] *) {
+    left: 0.75rem;
 }
 .rtl\:ml-0:where([dir="rtl"], [dir="rtl"] *) {
     margin-left: 0px;

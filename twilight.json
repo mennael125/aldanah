@@ -1593,16 +1593,6 @@
             ]
         },
         {
-            "key": "d7618bd4-d6f8-4191-b500-c87cf2aa2f7c",
-            "title": {
-                "en": "imagcat",
-                "ar": "القسم و الصوره"
-            },
-            "icon": "sicon-store",
-            "path": "imagcatsli11",
-            "fields": []
-        },
-        {
             "key": "9773a4ec-d438-454a-b716-480d853ef9d9",
             "title": {
                 "en": "reviews",
@@ -1685,6 +1675,59 @@
                     "required": false,
                     "minLength": 6,
                     "maxLength": 30
+                }
+            ]
+        },
+        {
+            "key": "6b51d37c-6e3e-4ac6-be20-74858714f493",
+            "title": {
+                "en": "product_image",
+                "ar": "صوره و منتج"
+            },
+            "icon": "sicon-store",
+            "path": "productandimg11",
+            "fields": [
+                {
+                    "id": "product111",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "productandimg",
+                    "description": null,
+                    "labelHTML": null,
+                    "item_label": null,
+                    "icon": "sicon-list-add",
+                    "fields": [
+                        {
+                            "id": "product111.img",
+                            "type": "string",
+                            "format": "image",
+                            "label": "الصوره",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://hostname.com/image.png",
+                            "icon": "sicon-image",
+                            "value": null,
+                            "required": false
+                        },
+                        {
+                            "id": "product111.prrurl",
+                            "type": "string",
+                            "format": "url",
+                            "inputType": "url",
+                            "label": "رابط المنتج",
+                            "description": null,
+                            "labelHTML": null,
+                            "placeholder": "e.g. https://salla.sa",
+                            "icon": "sicon-link",
+                            "value": null,
+                            "required": false,
+                            "minLength": 6,
+                            "maxLength": "554"
+                        }
+                    ],
+                    "value": [],
+                    "minLength": 1,
+                    "maxLength": 5
                 }
             ]
         }
