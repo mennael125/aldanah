@@ -1720,7 +1720,7 @@
                             "selected": [],
                             "options": [],
                             "source": "Products",
-                            "multichoice": true,
+                            "multichoice": false,
                             "searchable": true,
                             "required": false,
                             "value": []
