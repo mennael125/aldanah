@@ -941,9 +941,6 @@ select {
 .top-full {
     top: 100%;
 }
-.top-3 {
-    top: 0.75rem;
-}
 .-z-1 {
     z-index: -1;
 }
@@ -1130,9 +1127,6 @@ select {
 .hidden {
     display: none;
 }
-.aspect-square {
-    aspect-ratio: 1 / 1;
-}
 .\!h-36 {
     height: 9rem !important;
 }
@@ -1201,9 +1195,6 @@ select {
 }
 .h-px {
     height: 1px;
-}
-.h-8 {
-    height: 2rem;
 }
 .max-h-0 {
     max-height: 0px;
@@ -2117,6 +2108,9 @@ select {
 }
 .opacity-80 {
     opacity: 0.8;
+}
+.opacity-70 {
+    opacity: 0.7;
 }
 .shadow {
     --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
@@ -24425,6 +24419,9 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
     .lg\:grid-cols-8 {
         grid-template-columns: repeat(8, minmax(0, 1fr));
     }
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
     .lg\:flex-row {
         flex-direction: row;
     }
@@ -24533,9 +24530,6 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
 }
 .ltr\:right-4:where([dir="ltr"], [dir="ltr"] *) {
     right: 1rem;
-}
-.ltr\:right-3:where([dir="ltr"], [dir="ltr"] *) {
-    right: 0.75rem;
 }
 .ltr\:ml-1:where([dir="ltr"], [dir="ltr"] *) {
     margin-left: 0.25rem;
@@ -24657,9 +24651,6 @@ body.font-dinnextltarabic-regular .btn--add-to-cart {
 }
 .rtl\:right-0:where([dir="rtl"], [dir="rtl"] *) {
     right: 0px;
-}
-.rtl\:left-3:where([dir="rtl"], [dir="rtl"] *) {
-    left: 0.75rem;
 }
 .rtl\:ml-0:where([dir="rtl"], [dir="rtl"] *) {
     margin-left: 0px;
